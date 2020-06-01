@@ -195,6 +195,7 @@ void CamCalibration::processCamCalib() {
             calib.addPoint(selected_points_[i].get_oX(), selected_points_[i].get_oY(), selected_points_[i].get_oZ(),
                            ip);
 
+            ROS_DEBUG_STREAM("pose num=" << pose.getPoints().size());
             vpDisplay::displayCross(img_, d.getCog(), 10, vpColor::red);
             vpDisplay::flush(img_);
         } catch (vpTrackingException e) {

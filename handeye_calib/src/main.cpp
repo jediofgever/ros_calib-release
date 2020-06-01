@@ -1,6 +1,7 @@
 #include <common/RobotPoseGenerator.h>
 #include <handeye_calib/HandeyeCalibration.h>
 #include <QApplication>
+#include <QDir>
 #include <QPixmap>
 #include <QtWidgets/QMessageBox>
 #include <mutex>
@@ -76,7 +77,7 @@ int main(int argc, char** argv) {
     spinner.start();
 
     QMessageBox calib_start_box;
-    QPixmap pic("/home/atas/QT.png");
+    QPixmap pic("QT.png");
     calib_start_box.setIconPixmap(pic);
     calib_start_box.exec();
 
@@ -85,6 +86,8 @@ int main(int argc, char** argv) {
     pose_generator.generatePoses(5);
     // start from 0 and increment until all generated poses are visited
     int executed_poses = 0;
+    QDir dir;
+    // ROS_ERROR("current path=" << dir.currentPath().toStdString());
 
     // ENTER the looping, make sure our god, our dear ROS is ok and all poses are not executed
     while (ros::ok() && (executed_poses < num_pose_variants * 10)) {
