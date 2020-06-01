@@ -34,6 +34,7 @@ I have used realsense d435 camera and in the launch file you will see that I sta
 but any RGB camera that can be run with ROS should be usable. Though the topic names and coordinate frames should be double chechked when setting the parameters. in config.yaml and handeye_calib.launch files. 
 
 Replace the Realsense part in handeye_calib.launch, if you are using another camera 
+
 ### Running the handeye_calib
 For handeye_calib to run , you will need to make sure you have bringed up the robot, and a TF stream is available for the TF listener, This typically is achieved by initilizing the Moveit generated launch files , e.g move_group launch file. 
 
@@ -58,3 +59,20 @@ Note that this process is fully autmatic and once started it does not need any m
 
 After after each pose the calibration will be calculated and a .yaml file will be dumped to calibration_path that you set in config.yaml file
 
+## cam_calib
+
+This package can be used to calibrate intrinsics of camera. Again this package is based on vision_visp, a marker that consists of circles is used,  
+the marker can be found here;
+ https://github.com/lagadic/vision_visp/blob/master/visp_camera_calibration/launch/images/grid2d.pdf
+ print the marker in 1:1 scale, measure to make sure the linear distance between center of circles is 30mm. The marker should be on a flat and rigid surface to avoid distortions. 
+
+### Type of Camera that You use for cam_calib
+Again I tested cam_calib with realsense d435 camera but it is no big deal to use another camera as long as you make it run with ROS. In the ros_calib/cam_calib/cfg/config.yaml file change/check that topic names are matching to your camera's; 
+
+for example in realsense following topics are used;
+
+* camera_image_topic_name: "/camera/color/image_raw"
+* set_camera_info_service_topic_name: "/camera/color/set_camera_info"
+* calibration_path: "/home/atas/calibration.ini"
+
+### Running the cam_calib
