@@ -1,0 +1,17 @@
+<package>
+  <name>ros_calib</name>
+   <version>0.0.0</version>
+   <description>
+    Virtual package providing ros_calib related packages.
+  </description>
+  <maintainer email="fetulahatas1@gmail.com">Fetullah Atas</maintainer>
+  <author email="fetulahatas1@gmail.com">Fetullah Atas</author>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>cam_calib</run_depend>
+  <run_depend>handeye_calib</run_depend>
+  <run_depend>common</run_depend>
+  <export>
+    <metapackage/>
+  </export>
+</package>
