@@ -1,3 +1,81 @@
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+    + [ROS Melodic](#ros-melodic)
+    + [MoveIt](#moveit)
+    + [QT5 Default](#qt5-default)
+    + [vision_visp](#vision-visp)
+    + [visp](#visp)
+    + [Aruco](#aruco)
+    + [ros_calib](#ros-calib)
+    + [Build anmd Source](#build-anmd-source)
+- [Aim](#aim)
+- [Problem Statement for Hand-Eye or Eye-in-Hand calibration](#problem-statement-for-hand-eye-or-eye-in-hand-calibration)
+- [handeye_calib](#handeye-calib)
+  * [Aruco Tracker for handeye_calib](#aruco-tracker-for-handeye-calib)
+  * [Type of Camera that You use for handeye_calib](#type-of-camera-that-you-use-for-handeye-calib)
+  * [Running the handeye_calib](#running-the-handeye-calib)
+- [cam_calib](#cam-calib)
+  * [Type of Camera that You use for cam_calib](#type-of-camera-that-you-use-for-cam-calib)
+  * [Running the cam_calib](#running-the-cam-calib)
+- [common lib and its utilities](#common-lib-and-its-utilities)
+
+
+## Prerequisites
+
+* ROS Melodic
+* Moveit (Binary Install);
+* QT5 Default from Ubuntu apt-get
+* vision_visp
+* visp
+* Aruco Tracker for handeye_calib
+* YOUR CAMERAS ROS PACKAGE
+
+## Installation
+#### ROS Melodic
+  Installation [here](http://wiki.ros.org/melodic/Installation/Ubuntu)
+#### MoveIt 
+
+> sudo apt-get install ros-melodic-moveit*
+
+#### QT5 Default
+> sudo apt-get install build-essential
+
+> sudo apt-get install qtcreator
+
+> sudo apt-get install qt5-default
+
+#### vision_visp
+> sudo apt-get install ros-melodic-vision-visp 
+
+#### visp
+> sudo apt-get install ros-melodic-visp
+
+#### Aruco
+clone aruco to your catkin_ws/src 
+> cd catkin_ws/src
+
+> git clone https://github.com/pal-robotics/aruco_ros
+
+
+#### ros_calib
+clone this repository to your workspace
+
+> cd catkin_ws/src
+
+> git clone https://github.com/jediofgever/ros_calib.git
+
+#### Build anmd Source 
+satisfy package dependencies if any 
+
+> rosdep install --from-paths src --ignore-src --rosdistro melodic
+
+> cd catkin_ws
+
+> catkin_make 
+
+> source devel/setup.bash
+
+
 ## Aim
 This repository contains ROS packages, which are to be used to calibrate;
 * extrinsics,  Hand-in-Eye or Eye-in-Hand.   
@@ -76,3 +154,16 @@ for example in realsense following topics are used;
 * calibration_path: "/home/atas/calibration.ini"
 
 ### Running the cam_calib
+Just like handeye_calib , once we run this package a set of randomly generated poses be qued, After arriving at each pose the user will be asked to select the keypoints 1-2-3-4. After selected keypoints , the user should click mouse-left and the robot will be moved to next pose, thisprocess will take place until all generated poses are visited, finally a .ini file will dumped to calibraion_path that you set in cfg/config.yaml file. 
+
+At Each pose the shot will be taken and the user will be asked to click on center of keypoints 1-2-3-4. 
+click on the center of key points after selected all 4 points  click left to go to next pose
+![.](resources/cam_calib_select.png)
+
+the remaining circles will uatomaically be detected by VISP.
+![.](resources/cam_calib_after_select.png)
+
+## common lib and its utilities
+If you read until here carefully  you might have noticed there is some magical things going on , such as random generated poses, planning to this poses, plan execution etc. 
+
+This functions are provided by common lib , RandomPoseGenerator class of common lib is responsible to create poses surronding robot end-effector. RobotController class is responsible to make a plan and move robot along the path planned. A visualization of plan in blue color is popped up in RVIZ at each plan execution.
