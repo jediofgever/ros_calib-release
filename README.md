@@ -28,7 +28,7 @@
 * vision_visp
 * visp
 * Aruco Tracker for handeye_calib
-* YOUR CAMERAS ROS PACKAGE
+* YOUR CAMERA'S ROS PACKAGE
 
 ## Installation
 #### ROS Melodic
@@ -64,7 +64,7 @@ clone this repository to your workspace
 
 > git clone https://github.com/jediofgever/ros_calib.git
 
-#### Build anmd Source 
+#### Build and Source 
 satisfy package dependencies if any 
 
 > rosdep install --from-paths src --ignore-src --rosdistro melodic
@@ -74,7 +74,6 @@ satisfy package dependencies if any
 > catkin_make 
 
 > source devel/setup.bash
-
 
 ## Aim
 This repository contains ROS packages, which are to be used to calibrate;
@@ -167,3 +166,8 @@ the remaining circles will uatomaically be detected by VISP.
 If you read until here carefully  you might have noticed there is some magical things going on , such as random generated poses, planning to this poses, plan execution etc. 
 
 This functions are provided by common lib , RandomPoseGenerator class of common lib is responsible to create poses surronding robot end-effector. RobotController class is responsible to make a plan and move robot along the path planned. A visualization of plan in blue color is popped up in RVIZ at each plan execution.
+
+
+## Referencess
+[1] http://wiki.ros.org/vision_visp
+[2] https://github.com/IFL-CAMP/easy_handeye
