@@ -49,6 +49,11 @@ CamCalibration::CamCalibration(ros::NodeHandle* nh)
     point_correspondence_publisher_ =
         nh_->advertise<visp_camera_calibration::CalibPointArray>("point_correspondence", queue_size_);
     // Parse the paraneters read from yaml file, append them to lists
+
+    set_camera_info_bis_service_callback_t set_camera_info_bis_callback =
+        boost::bind(&CamCalibration::setCameraInfoBisCallback, this, _1, _2);
+    set_camera_info_bis_service_ = nh_->advertiseService("set_camera_info_bis", set_camera_info_bis_callback);
+
     XmlRpc::XmlRpcValue model_points_x_list;
     XmlRpc::XmlRpcValue model_points_y_list;
     XmlRpc::XmlRpcValue model_points_z_list;
@@ -121,6 +126,19 @@ void CamCalibration::init() {
 
         is_initialized_ = true;
     }
+}
+
+bool CamCalibration::setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request& req,
+                                              sensor_msgs::SetCameraInfo::Response& res) {
+    struct passwd* pw = getpwuid(getuid());
+    const char* homedir = pw->pw_dir;
+    std::string home_dir_str(homedir);
+    std::string calibration_path;
+    nh_->getParam("calibration_path", calibration_path);
+    ROS_INFO("saving calibration file to %s", (home_dir_str + "/" + calibration_path).c_str());
+    camera_calibration_parsers::writeCalibration((home_dir_str + "/" + calibration_path), camera_image_topic_name_,
+                                                 req.camera_info);
+    return true;
 }
 
 void CamCalibration::processCamCalib() {

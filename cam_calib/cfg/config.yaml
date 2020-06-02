@@ -1,10 +1,10 @@
 # camera image topic name , RGB image
 camera_image_topic_name: "/camera/color/image_raw"
-# ros service topic name to set camera info, 
+# ros service topic name to set camera info,
 set_camera_info_service_topic_name: "/camera/color/set_camera_info"
 # calibration file name under your /home/user_name/calibration_path
 calibration_path: "calibration.ini"
-#DO NOT CHANGE THE VALUES, 
+#DO NOT CHANGE THE VALUES,
 gray_level_precision: 0.7
 size_precision: 0.5
 pause_at_each_frame: True

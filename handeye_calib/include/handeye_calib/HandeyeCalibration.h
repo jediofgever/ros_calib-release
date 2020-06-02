@@ -27,9 +27,6 @@
  */
 class HandeyeCalibration {
    private:
-    std::string DIRECTORY;
-    std::string calibration_file_name;
-
     // base link of the robot, in ros this will translate to "base_link"
     std::string robot_base_frame;
     // end_effector frame of robot  uusally "tool0" or "link_6" for 6DOF robots

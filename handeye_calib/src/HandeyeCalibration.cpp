@@ -155,8 +155,9 @@ void HandeyeCalibration::computeCalibration() {
         struct passwd *pw = getpwuid(getuid());
         const char *homedir = pw->pw_dir;
         std::string home_dir_str(homedir);
-
-        trans_as_1D_array.saveYAML(home_dir_str + "/auto_calibration_result.yaml", trans_as_1D_array);
+        std::string calibration_path;
+        nh_->getParam("calibration_path", calibration_path);
+        trans_as_1D_array.saveYAML(home_dir_str + calibration_path, trans_as_1D_array);
         ROS_INFO_STREAM("RESULTING EXTRINSIC CALIB RESULT IS: " << std::endl << trans);
 
     } catch (const std::exception &e) {
