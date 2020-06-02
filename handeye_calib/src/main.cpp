@@ -77,8 +77,12 @@ int main(int argc, char** argv) {
     spinner.start();
 
     QMessageBox calib_start_box;
-    QPixmap pic("QT.png");
-    calib_start_box.setIconPixmap(pic);
+    calib_start_box.setText(
+        "YOU HAVE STARTED AUTO HANDEYE CALIBRATION NODE \n \n"
+        "A SET OF RANDOM POSES WILL BE GENERATED AND AT EACH POSE AN ITERATION OF CALIBRATION WILL TAKE PLACE \n \n"
+        "IF THE ALGORITHM IS UNABLE TO DETECT ARUCO MARKER THE USER WILL BE INFORMED \n \n"
+        "THE SAMPLE IN THIS POSE WILL BE SKIPPED , AND IT WILL NOT BE INCLUDED IN CALIBRATION \n \n"
+        "MAKE SURE YOU READ AND UNDERSTAND THIS, IF SO CLICK OK TO START THE PROCESS !!");
     calib_start_box.exec();
 
     // Each Pose variants will contin 10 poses , so the total generated poses will be num_pose_variants * 10

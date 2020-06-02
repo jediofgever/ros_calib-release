@@ -157,7 +157,7 @@ void HandeyeCalibration::computeCalibration() {
         std::string home_dir_str(homedir);
         std::string calibration_path;
         nh_->getParam("calibration_path", calibration_path);
-        trans_as_1D_array.saveYAML(home_dir_str + calibration_path, trans_as_1D_array);
+        trans_as_1D_array.saveYAML(home_dir_str + "/" + calibration_path, trans_as_1D_array);
         ROS_INFO_STREAM("RESULTING EXTRINSIC CALIB RESULT IS: " << std::endl << trans);
 
     } catch (const std::exception &e) {
