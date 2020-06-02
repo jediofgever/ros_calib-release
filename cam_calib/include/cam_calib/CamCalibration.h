@@ -16,6 +16,10 @@
 #include <visp_camera_calibration/calibrateResponse.h>
 #include <mutex>
 
+#include <QApplication>
+#include <QPixmap>
+#include <QtWidgets/QMessageBox>
+
 /**
  * @brief Handeye calibration class based on; vison_visp
  * https://github.com/lagadic/vision_visp
