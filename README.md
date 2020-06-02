@@ -21,6 +21,7 @@
 - [common lib and its utilities](#common-lib-and-its-utilities)
 
 ## Prerequisites
+```cpp
 
 * ROS Melodic
 * Moveit (Binary Install);
@@ -30,54 +31,52 @@
 * Aruco Tracker for handeye_calib
 * YOUR CAMERA'S ROS PACKAGE
 
+```
 ## Installation
 #### ROS Melodic
   Installation [here](http://wiki.ros.org/melodic/Installation/Ubuntu)
 #### MoveIt 
-
-> sudo apt-get install ros-melodic-moveit*
-
+``` cpp
+ sudo apt-get install ros-melodic-moveit*
+```
 #### QT5 Default
-> sudo apt-get install build-essential
-
-> sudo apt-get install qtcreator
-
-> sudo apt-get install qt5-default
-
+``` bash
+ sudo apt-get install build-essential
+ sudo apt-get install qtcreator
+ sudo apt-get install qt5-default
+```
 #### vision_visp
-> sudo apt-get install ros-melodic-vision-visp 
-
+```bash
+sudo apt-get install ros-melodic-vision-visp 
+```
 #### visp
-> sudo apt-get install ros-melodic-visp
-
+```bash
+sudo apt-get install ros-melodic-visp
+```
 #### Aruco
-clone aruco to your catkin_ws/src 
-> cd catkin_ws/src
-
-> git clone https://github.com/pal-robotics/aruco_ros
-
+clone aruco to your catkin_ws/src
+```bash
+cd catkin_ws/src
+git clone https://github.com/pal-robotics/aruco_ros
+```
 
 #### ros_calib
 clone this repository to your workspace
-
-> cd catkin_ws/src
-
-> git clone https://github.com/jediofgever/ros_calib.git
-
+```bash
+cd catkin_ws/src
+git clone https://github.com/jediofgever/ros_calib.git
+```
 #### Build and Source 
 satisfy package dependencies if any 
-
-> rosdep install --from-paths src --ignore-src --rosdistro melodic
-
-> cd catkin_ws
-
-> catkin_make 
-
-> source devel/setup.bash
-
+```bash
+rosdep install --from-paths src --ignore-src --rosdistro melodic
+cd catkin_ws
+catkin_make 
+source devel/setup.bash
+```
 ## Aim
 This repository contains ROS packages, which are to be used to calibrate;
-* extrinsics,  Hand-in-Eye or Eye-in-Hand.   
+* extrinsics,  parameters of a 2D camera Hand-in-Eye or Eye-in-Hand.   
 * intrinsics,  parameters of a 2D camera. 
 
 ## Problem Statement for Hand-Eye or Eye-in-Hand calibration

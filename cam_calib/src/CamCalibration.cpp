@@ -30,27 +30,25 @@ CamCalibration::CamCalibration(ros::NodeHandle* nh)
       cam_param_(600, 600, 0, 0),
       is_initialized_(false),
       nh_(nh) {
+    // Get parameters from config.yaml file
     std::string model_points_x_param("model_points_x");
     std::string model_points_y_param("model_points_y");
     std::string model_points_z_param("model_points_z");
     std::string selected_points_x_param("selected_points_x");
     std::string selected_points_y_param("selected_points_y");
     std::string selected_points_z_param("selected_points_z");
-
     ros::param::get("camera_image_topic_name", camera_image_topic_name_);
     ros::param::get("set_camera_info_service_topic_name", set_camera_info_service_topic_name_);
 
-    set_camera_info_bis_service_callback_t set_camera_info_bis_callback =
-        boost::bind(&CamCalibration::setCameraInfoBisCallback, this, _1, _2);
-
+    // subscribe to raw image
     camera_raw_subscriber_ =
         nh_->subscribe(camera_image_topic_name_, queue_size_, &CamCalibration::rawImageCallback, this);
-
+    // connect to calibrate service
     calibrate_service_ = nh_->serviceClient<visp_camera_calibration::calibrate>("/calibrate");
+    // point correspondence publisher for camera calibrator
     point_correspondence_publisher_ =
         nh_->advertise<visp_camera_calibration::CalibPointArray>("point_correspondence", queue_size_);
-    set_camera_info_bis_service_ = nh_->advertiseService("set_camera_info_bis", set_camera_info_bis_callback);
-
+    // Parse the paraneters read from yaml file, append them to lists
     XmlRpc::XmlRpcValue model_points_x_list;
     XmlRpc::XmlRpcValue model_points_y_list;
     XmlRpc::XmlRpcValue model_points_z_list;
@@ -123,15 +121,6 @@ void CamCalibration::init() {
 
         is_initialized_ = true;
     }
-}
-
-bool CamCalibration::setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request& req,
-                                              sensor_msgs::SetCameraInfo::Response& res) {
-    std::string calibration_path;
-    ros::param::get("calibration_path", calibration_path);
-    ROS_INFO("saving calibration file to %s", calibration_path.c_str());
-    camera_calibration_parsers::writeCalibration(calibration_path, camera_image_topic_name_, req.camera_info);
-    return true;
 }
 
 void CamCalibration::processCamCalib() {

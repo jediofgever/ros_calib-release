@@ -21,7 +21,7 @@
 #include <QtWidgets/QMessageBox>
 
 /**
- * @brief Handeye calibration class based on; vison_visp
+ * @brief Camera instrinsics calibration class based on; vison_visp
  * https://github.com/lagadic/vision_visp
  *
  */
@@ -34,7 +34,7 @@ class CamCalibration {
     ros::ServiceServer set_camera_info_bis_service_;
     ros::ServiceClient calibrate_service_;
 
-    //
+    // for topic message
     int queue_size_;
     bool pause_image_;
     bool is_initialized_;
@@ -85,16 +85,6 @@ class CamCalibration {
      * @param image
      */
     void rawImageCallback(const sensor_msgs::Image::ConstPtr &image);
-
-    /**
-     * @brief Set the Camera Info Bis Callback object, writes calibration result to disk
-     *
-     * @param req
-     * @param res
-     * @return true
-     * @return false
-     */
-    bool setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request &req, sensor_msgs::SetCameraInfo::Response &res);
 
     /**
      * @brief does actual collection of keypoints selected by user, publishes corresponding point for calibrator

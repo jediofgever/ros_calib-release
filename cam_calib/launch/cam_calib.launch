@@ -1,17 +1,19 @@
 <launch>	
+
+   <!-- LOAD CONFIG.YAML FILE TO ROSPARAM SERVER-->
    <rosparam file="$(find cam_calib)/cfg/config.yaml" />   
 
-    <!-- Start Rviz-->>
-    <node type="rviz" name="rviz" pkg="rviz" launch-prefix="gdb -ex run --args" args="-d $(find cam_calib)/cfg/calibration.rviz"/>
+    <!-- START RVIZ WITH A DEFAULT VIEW-->>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find cam_calib)/cfg/calibration.rviz"/>
 
-    <!-- start the Realsense     -->
+    <!-- START REALSENSE CAMERA, REPLACE THIS WITH YOUR OWN CAMERA DRIVER-->
     <include file="$(find realsense2_camera)/launch/rs_camera.launch" >
     </include>
-
+    <!-- START visp_camera_calibration_calibrator WE NEED THIS FRO CALIBRATION SERVICE-->
     <node pkg="visp_camera_calibration" name="visp_camera_calibration_calibrator" type="visp_camera_calibration_calibrator"  output="screen"/>
     
-    <node pkg="cam_calib" name="cam_calib" type="cam_calib" args="camera_prefix:=/visp_camera_calibration"  output="screen">
-     
+    <!-- START cam_calib NODE-->
+    <node pkg="cam_calib" name="cam_calib" type="cam_calib" output="screen">
     </node>
 
 </launch>

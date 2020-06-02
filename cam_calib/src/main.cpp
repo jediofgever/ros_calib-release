@@ -39,6 +39,17 @@ int main(int argc, char** argv) {
     // start from 0 and increment until all generated poses are visited
     int executed_poses = 0;
 
+    QMessageBox Msgbox;
+    Msgbox.setText(
+        "YOU HAVE STARTED CAMERA INSTRISC CALIBRATION NODE \n \n"
+        "A SET OF RANDOM POSES WILL BE GENERATED AND AT EACH POSE AN IMAGE WILL SHOWN \n \n"
+        "CLICK THE KEY POINTS 1 2 3 4 RESPECTIVELY ON SHOWN IMAGE \n \n"
+        "AFTER SLEECTING ALL 4 KEYPOINTS THE ALGORITHM WILL DETECT ALL REMAINING POINTS \n \n"
+        "AND ONE ITERATION OF CALIBRATION WILL BE EXECUTED \n \n"
+        "IF THE ALGORITHM IS UNABLE TO DETECT ALL THE POINTS THAT POSE WILL BE SKIPPED AND NOT INCLUDED IN \n \n"
+        "MAKE SURE YOU READ AND UNDERSTAND THIS, IF SO CLICK OK TO START THE PROCESS !!");
+    Msgbox.exec();
+
     // ENTER the looping, make sure our god, our dear ROS is ok and all poses are not executed
     while (ros::ok() && (executed_poses < num_pose_variants * 10)) {
         // if pose is reachable execute it, else raise the error and go to next pose;
