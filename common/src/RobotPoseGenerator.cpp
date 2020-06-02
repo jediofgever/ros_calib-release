@@ -26,6 +26,15 @@ RobotPoseGenerator::~RobotPoseGenerator() {
 }
 
 /**
+ * @brief RETRUN A RANDOM INTEGER BETWEEN GIVEN BOUNDRIES
+ *
+ * @param Min
+ * @param Max
+ * @return int
+ */
+int RobotPoseGenerator::randint(int Min, int Max) { return std::rand() % (Max + 1 - Min) + Min; }
+
+/**
  * @brief given number variations, generates variations * 6 random poses
  *
  * @param number_of_variants
@@ -39,7 +48,8 @@ void RobotPoseGenerator::generatePoses(int number_of_variants) {
     std::vector<double> start_RPY = move_group_ptr_->getCurrentRPY();
 
     for (size_t i = 0; i < number_of_variants; i++) {
-        double rand_translation = (std::rand() % (kRANDMAX + 1)) / 100.0;
+        double rand_translation = randint(kLOWERTHRESHOLDCM, kUPPERTHRESHOLDCM) / 100.0;
+
         translateAndRotateThroughSingleAxe(rand_translation, start_pose, start_RPY,
                                            RobotPoseGenerator::Signed_Axes_Enum::X_PLUS);
         translateAndRotateThroughSingleAxe(rand_translation, start_pose, start_RPY,

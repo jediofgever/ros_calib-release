@@ -3,8 +3,7 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /Global Options1
+      Expanded: ~
       Splitter Ratio: 0.3168516755104065
     Tree Height: 577
   - Class: rviz/Selection
@@ -124,7 +123,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /aruco_tracker/result
+      Image Topic: /camera/color/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -224,7 +223,7 @@ Visualization Manager:
       Marker Topic: /aruco_tracker/marker
       Name: Marker
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Axes
@@ -262,16 +261,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.6127346754074097
+      Distance: 2.1015708446502686
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.43352293968200684
-        Y: -0.17929889261722565
-        Z: 0.09739837050437927
+        X: 0.30548375844955444
+        Y: -0.1371079832315445
+        Z: 0.20260119438171387
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

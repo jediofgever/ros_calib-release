@@ -22,8 +22,9 @@ class RobotPoseGenerator {
     // random generated poses vector
     std::vector<geometry_msgs::Pose> random_generated_poses_vector;
 
-    // Max translation in CM, through X AND Y axes
-    int kRANDMAX = 20;
+    // Max AND MIN translation in CM, through X AND Y axes
+    int kLOWERTHRESHOLDCM = 15;
+    int kUPPERTHRESHOLDCM = 20;
 
     enum Signed_Axes_Enum { X_PLUS = 0, X_MINUS = 1, Y_PLUS = 2, Y_MINUS = 3 };
     enum Quadrant_Enum { ONE = 0, TWO = 1, THREE = 2, FOUR = 3 };
@@ -91,4 +92,13 @@ class RobotPoseGenerator {
      */
     void translateAndRotateThroughDoubleAxes(double rand_translation, geometry_msgs::Pose start_pose,
                                              std::vector<double> start_RPY, int quadrant);
+
+    /**
+     * @brief RETRUN A RANDOM INTEGER BETWEEN GIVEN BOUNDRIES
+     *
+     * @param Min
+     * @param Max
+     * @return int
+     */
+    int randint(int Min, int Max);
 };
