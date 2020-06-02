@@ -34,10 +34,11 @@ int main(int argc, char** argv) {
     ROS_INFO("Camera Calibration Has been Initilizaed..");
 
     // Each Pose variants will contin 10 poses , so the total generated poses will be num_pose_variants * 10
-    int num_pose_variants = 5;
-    pose_generator.generatePoses(5);
+    int num_random_pose_variants;
+    nh.getParam("num_random_pose_variants", num_random_pose_variants);
+    pose_generator.generatePoses(num_random_pose_variants);
     // start from 0 and increment until all generated poses are visited
-    int executed_poses = 0;
+    int executed_poses_counter = 0;
 
     QMessageBox Msgbox;
     Msgbox.setText(
@@ -51,9 +52,9 @@ int main(int argc, char** argv) {
     Msgbox.exec();
 
     // ENTER the looping, make sure our god, our dear ROS is ok and all poses are not executed
-    while (ros::ok() && (executed_poses < num_pose_variants * 10)) {
+    while (ros::ok() && (executed_poses_counter < num_random_pose_variants * 10)) {
         // if pose is reachable execute it, else raise the error and go to next pose;
-        bool is_generated_pose_planable = pose_generator.executePose(executed_poses);
+        bool is_generated_pose_planable = pose_generator.executePose(executed_poses_counter);
         if (is_generated_pose_planable) {
             // Okay this pose is reachable and we have moved the robot to these pose
             ROS_INFO("ROBOT RECAHED TO THE GENERATED POSE,TAKING A SHOT NOW ... \n");
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
             // calibration
             proc.processCamCalib();
             // increment the counter of executed poses
-            executed_poses++;
+            executed_poses_counter++;
         } else {
             // if the generated pose is not reachable , raise a messagebox from qt to inform user
             QMessageBox Msgbox;
@@ -70,7 +71,7 @@ int main(int argc, char** argv) {
             // raise a ros error
             ROS_ERROR("COULD NOT REACH THIS RANDOM POSE JUMPING TO THE NEXT ONE !!!  \n");
             // count these bad pose as executed and move to next one
-            executed_poses++;
+            executed_poses_counter++;
             continue;
         }
         // spin the loop
