@@ -11,6 +11,8 @@ RobotPoseGenerator::RobotPoseGenerator(/* args */) {
     move_group_ptr_ = new moveit::planning_interface::MoveGroupInterface(PLANNING_GROUP);
     random_generated_pose_publisher =
         nh_->advertise<geometry_msgs::PoseArray>("/handeye_calib/random_generated_poses", 1);
+    random_generated_pose_index_publiher =
+        nh_->advertise<visualization_msgs::MarkerArray>("/handeye_calib/random_generated_posse_nums", 1);
     std::cout << "CONSTRUCTED AN INSTANCE OF RobotPoseGenerator" << std::endl;
 }
 
@@ -69,15 +71,45 @@ void RobotPoseGenerator::generatePoses(int number_of_variants) {
                                             RobotPoseGenerator::Quadrant_Enum::FOUR);
         random_generated_poses_vector.push_back(start_pose);
     }
-    geometry_msgs::PoseArray random_generated_poses_array;
+
     random_generated_poses_array.header.frame_id = "base_link";
     random_generated_poses_array.header.stamp = ros::Time::now();
+
     for (size_t i = 0; i < random_generated_poses_vector.size(); i++) {
         random_generated_poses_array.poses.push_back(random_generated_poses_vector[i]);
+        visualization_msgs::Marker random_generated_pose_index;
+        random_generated_pose_index.header.frame_id = "base_link";
+        random_generated_pose_index.header.stamp = ros::Time::now();
+        random_generated_pose_index.id = i;
+        random_generated_pose_index.lifetime = ros::Duration(5.0);
+        random_generated_pose_index.action = visualization_msgs::Marker::ADD;
+        random_generated_pose_index.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+        random_generated_pose_index.pose = random_generated_poses_vector[i];
+        random_generated_pose_index.text = std::to_string(i);
+        random_generated_pose_index.ns = "handeye";
+        std_msgs::ColorRGBA color;
+        color.g = 1.0;
+        color.b = 1.0;
+        color.a = 1.0;
+        random_generated_pose_index.color = color;
+        random_generated_pose_index.scale.z = 0.02;
+        random_generated_pose_index_array.markers.push_back(random_generated_pose_index);
     }
     random_generated_pose_publisher.publish(random_generated_poses_array);
+    random_generated_pose_index_publiher.publish(random_generated_pose_index_array);
 
     std::cout << "Generated random poses:" << random_generated_poses_vector.size() << std::endl;
+}
+
+/**
+ * @brief
+ *
+ */
+void RobotPoseGenerator::updatePoses() {
+    random_generated_poses_array.poses.erase(random_generated_poses_array.poses.begin() + 0);
+    random_generated_pose_index_array.markers.erase(random_generated_pose_index_array.markers.begin() + 0);
+    random_generated_pose_publisher.publish(random_generated_poses_array);
+    random_generated_pose_index_publiher.publish(random_generated_pose_index_array);
 }
 
 /**
@@ -100,7 +132,6 @@ geometry_msgs::Quaternion RobotPoseGenerator::eulertoQuaternion(double robot_rx_
 
     // tf::Quaternions to geotmetry_msgs::Quaternion
     robot_goal_orientation_geo_msg = tf2::toMsg(robot_goal_orientation_quat);
-
     return robot_goal_orientation_geo_msg;
 }
 

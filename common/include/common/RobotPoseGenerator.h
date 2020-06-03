@@ -30,6 +30,10 @@ class RobotPoseGenerator {
     enum Quadrant_Enum { ONE = 0, TWO = 1, THREE = 2, FOUR = 3 };
 
     ros::Publisher random_generated_pose_publisher;
+    ros::Publisher random_generated_pose_index_publiher;
+
+    geometry_msgs::PoseArray random_generated_poses_array;
+    visualization_msgs::MarkerArray random_generated_pose_index_array;
 
    public:
     /**
@@ -68,6 +72,13 @@ class RobotPoseGenerator {
      * @return false if pose at pose_index was reachable
      */
     bool executePose(int pose_index);
+
+    /**
+     * @brief
+     *
+     * @param
+     */
+    void updatePoses();
 
     /**
      * @brief   function to calculate the pose for robot TCP , considers the translation, calculates the

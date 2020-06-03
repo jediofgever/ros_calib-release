@@ -168,7 +168,8 @@ Visualization Manager:
       Marker Topic: /moveit_visual_markers
       Name: MarkerArray
       Namespaces:
-        {}
+        Path: true
+        Sphere: true
       Queue Size: 100
       Value: true
     - Class: jsk_rviz_plugin/BoundingBoxArray
@@ -204,8 +205,8 @@ Visualization Manager:
       width: 128
     - Alpha: 0.6000000238418579
       Arrow Length: 0.03999999910593033
-      Axes Length: 0.30000001192092896
-      Axes Radius: 0.009999999776482582
+      Axes Length: 0.05999999865889549
+      Axes Radius: 0.0020000000949949026
       Class: rviz/PoseArray
       Color: 81; 150; 255
       Enabled: true
@@ -214,7 +215,7 @@ Visualization Manager:
       Name: PoseArray
       Shaft Length: 0.23000000417232513
       Shaft Radius: 0.009999999776482582
-      Shape: Arrow (Flat)
+      Shape: Axes
       Topic: /handeye_calib/random_generated_poses
       Unreliable: false
       Value: true
@@ -232,6 +233,14 @@ Visualization Manager:
       Name: Axes
       Radius: 0.004999999888241291
       Reference Frame: camera_marker
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /handeye_calib/random_generated_posse_nums
+      Name: MarkerArray
+      Namespaces:
+        handeye: true
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:

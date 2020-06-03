@@ -102,11 +102,13 @@ int main(int argc, char** argv) {
 
     ros::Subscriber marker_pose_in_camera_link_sub =
         node_handle.subscribe("/aruco_tracker/pose", 1, markerPoseCallback);
+
     // create an instance HandeyeCalibration, to collect samples and coimpute calibration between camera to robot
     // end-effector
     HandeyeCalibration hand_eye_node(&node_handle);
     // for generating random poses and executing them
     RobotPoseGenerator pose_generator;
+
     RobotController robot_contoller;
     tf::TransformListener listener;
     moveit::planning_interface::MoveGroupInterface* move_group_ptr_;
@@ -125,7 +127,6 @@ int main(int argc, char** argv) {
     marker_in_tool.position.x = latest_marker_pose_in_camera_link.pose.position.z;
     marker_in_tool.position.y = latest_marker_pose_in_camera_link.pose.position.y;
     marker_in_tool.position.z = latest_marker_pose_in_camera_link.pose.position.x;
-
     distance_to_travel_in_tool.position.x = -marker_in_tool.position.x;
     distance_to_travel_in_tool.position.y = -marker_in_tool.position.y;
     distance_to_travel_in_tool.position.z = marker_in_tool.position.z - kDistanceinZ;
@@ -189,6 +190,7 @@ int main(int argc, char** argv) {
             executed_poses_counter++;
             continue;
         }
+        pose_generator.updatePoses();
 
         // spin the loop
         ros::spinOnce();
