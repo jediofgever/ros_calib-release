@@ -115,12 +115,17 @@ int main(int argc, char** argv) {
     static const std::string PLANNING_GROUP = "manipulator";
     move_group_ptr_ = new moveit::planning_interface::MoveGroupInterface(PLANNING_GROUP);
 
+    geometry_msgs::Pose initial_pose;
+    pose_generator.loadPosemsgsFromYAML(&node_handle, "real_robot_initial_pose", initial_pose);
+    robot_contoller.moveEndEffectortoGoalinJointSpace(initial_pose, move_group_ptr_);
+
     while (is_marker_pose_recieved == false) {
         ROS_INFO("waiting for aruco marker pose to come up .....\n");
         QMutexLocker locker(&mutex);
         waitCondition.wait(&mutex, 100);
     }
     ROS_INFO("aruco marker pose is up  approaching it..... \n");
+
     double kDistanceinZ = 0.30;
     // move robot on top of marker
     geometry_msgs::Pose marker_in_tool, distance_to_travel_in_tool;
@@ -130,7 +135,6 @@ int main(int argc, char** argv) {
     distance_to_travel_in_tool.position.x = -marker_in_tool.position.x;
     distance_to_travel_in_tool.position.y = -marker_in_tool.position.y;
     distance_to_travel_in_tool.position.z = marker_in_tool.position.z - kDistanceinZ;
-
     robot_contoller.moveEndEffectortoGoalinToolSpace(distance_to_travel_in_tool, move_group_ptr_, &listener);
 
     QMessageBox calib_start_box;

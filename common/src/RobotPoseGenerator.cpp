@@ -302,3 +302,75 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
     temp_random_pose.orientation = temp_recorrected_orientation_quaternion;
     random_generated_poses_vector.push_back(temp_random_pose);
 }
+
+/**
+ * @brief
+ *
+ * @param nh_
+ * @param param_name
+ * @param pose
+ */
+geometry_msgs::Pose RobotPoseGenerator::loadPosemsgsFromYAML(ros::NodeHandle *nh_, std::string param_name,
+                                                             geometry_msgs::Pose &pose) {
+    XmlRpc::XmlRpcValue config;
+
+    if (nh_->hasParam(param_name)) {
+        try {
+            nh_->getParam(param_name, config);
+
+            ROS_ASSERT(config.getType() == XmlRpc::XmlRpcValue::TypeArray);
+
+            try {
+                // These matrices can cause problems if all the types
+                // aren't specified with decimal points. Handle that
+                // using string streams.
+                //  meters of position
+                std::ostringstream ostr_x;
+                ostr_x << config[0];
+                std::istringstream istr_x(ostr_x.str());
+                istr_x >> pose.position.x;
+
+                std::ostringstream ostr_y;
+                ostr_y << config[1];
+                std::istringstream istr_y(ostr_y.str());
+                istr_y >> pose.position.y;
+
+                std::ostringstream ostr_z;
+                ostr_z << config[2];
+                std::istringstream istr_z(ostr_z.str());
+                istr_z >> pose.position.z;
+
+                ///////////Euler  angle of rotations
+
+                std::ostringstream ostr_rx;
+                ostr_rx << config[3];
+                std::istringstream istr_rx(ostr_rx.str());
+
+                std::ostringstream ostr_ry;
+                ostr_ry << config[4];
+                std::istringstream istr_ry(ostr_ry.str());
+
+                std::ostringstream ostr_rz;
+                ostr_rz << config[5];
+                std::istringstream istr_rz(ostr_rz.str());
+                double rx, ry, rz;
+                istr_rx >> rx;
+                istr_ry >> ry;
+                istr_rz >> rz;
+
+                pose.orientation = eulertoQuaternion(rx, ry, rz);
+
+            } catch (XmlRpc::XmlRpcException &e) {
+                throw e;
+            } catch (...) {
+                throw;
+            }
+
+            std::cout << param_name << "\n " << pose << "\n ";
+        } catch (XmlRpc::XmlRpcException &e) {
+            ROS_ERROR_STREAM("ERROR reading sensor config: " << e.getMessage() << " for " << param_name
+                                                             << " (type: " << config.getType() << ")");
+        }
+    }
+    return pose;
+}

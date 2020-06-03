@@ -1,3 +1,4 @@
+#include <XmlRpcException.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/convert.h>
 #include <tf2/transform_datatypes.h>
@@ -62,7 +63,8 @@ class RobotPoseGenerator {
      * @param robot_rz_radian
      * @return geometry_msgs::Quaternion
      */
-    geometry_msgs::Quaternion eulertoQuaternion(double robot_rx_radian, double robot_ry_radian, double robot_rz_radian);
+    static geometry_msgs::Quaternion eulertoQuaternion(double robot_rx_radian, double robot_ry_radian,
+                                                       double robot_rz_radian);
 
     /**
      * @brief executes the randomly generated pose in random_generated_poses_vector with index of pose_index
@@ -112,4 +114,14 @@ class RobotPoseGenerator {
      * @return int
      */
     int randint(int Min, int Max);
+
+    /**
+     * @brief
+     *
+     * @param nh_
+     * @param param_name
+     * @param pose
+     */
+    static geometry_msgs::Pose loadPosemsgsFromYAML(ros::NodeHandle *nh_, std::string param_name,
+                                                    geometry_msgs::Pose &pose);
 };
