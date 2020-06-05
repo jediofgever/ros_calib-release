@@ -124,4 +124,13 @@ class RobotPoseGenerator {
      */
     static geometry_msgs::Pose loadPosemsgsFromYAML(ros::NodeHandle *nh_, std::string param_name,
                                                     geometry_msgs::Pose &pose);
+
+    /**
+     * @brief Get the Distance Between Pose object
+     *
+     * @param a
+     * @param b
+     * @return double
+     */
+    static double getDistanceBetweenPose(geometry_msgs::Pose a, geometry_msgs::Pose b);
 };

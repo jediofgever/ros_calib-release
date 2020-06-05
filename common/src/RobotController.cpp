@@ -305,7 +305,7 @@ void RobotController::publishRobotTrajectory(moveit::planning_interface::MoveGro
         path.push_back(tip_pose.translation());
 
         // put a sphere on this way point
-        visual_tools_ptr_->publishSphere(tip_pose, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
+        visual_tools_ptr_->publishSphere(tip_pose, rviz_visual_tools::BLUE, rviz_visual_tools::MEDIUM);
     }
 
     // radius of path

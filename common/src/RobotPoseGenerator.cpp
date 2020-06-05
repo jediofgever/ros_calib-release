@@ -81,7 +81,7 @@ void RobotPoseGenerator::generatePoses(int number_of_variants) {
         random_generated_pose_index.header.frame_id = "base_link";
         random_generated_pose_index.header.stamp = ros::Time::now();
         random_generated_pose_index.id = i;
-        random_generated_pose_index.lifetime = ros::Duration(5.0);
+        random_generated_pose_index.lifetime = ros::Duration(0.0);
         random_generated_pose_index.action = visualization_msgs::Marker::ADD;
         random_generated_pose_index.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
         random_generated_pose_index.pose = random_generated_poses_vector[i];
@@ -92,7 +92,7 @@ void RobotPoseGenerator::generatePoses(int number_of_variants) {
         color.b = 1.0;
         color.a = 1.0;
         random_generated_pose_index.color = color;
-        random_generated_pose_index.scale.z = 0.02;
+        random_generated_pose_index.scale.z = 0.025;
         random_generated_pose_index_array.markers.push_back(random_generated_pose_index);
     }
     random_generated_pose_publisher.publish(random_generated_poses_array);
@@ -373,4 +373,12 @@ geometry_msgs::Pose RobotPoseGenerator::loadPosemsgsFromYAML(ros::NodeHandle *nh
         }
     }
     return pose;
+}
+
+double RobotPoseGenerator::getDistanceBetweenPose(geometry_msgs::Pose a, geometry_msgs::Pose b) {
+    double x_diff = a.position.x - b.position.x;
+    double y_diff = a.position.y - b.position.y;
+    double z_diff = a.position.z - b.position.z;
+    double distance = std::sqrt(std::pow(x_diff, 2) + std::pow(y_diff, 2) + std::pow(z_diff, 2));
+    return distance;
 }

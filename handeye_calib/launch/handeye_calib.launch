@@ -25,7 +25,7 @@
     </node>
 
     <!-- START handeye_calib NODE-->
-    <node name="handeye_calib" pkg="handeye_calib" type="handeye_calib" output="screen">
+    <node name="handeye_calib" pkg="handeye_calib" type="handeye_calib" launch-prefix="gdb -ex run --args" output="screen">
     </node>
 
 </launch>

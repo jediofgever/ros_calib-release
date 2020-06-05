@@ -161,14 +161,18 @@ void CamCalibration::processCamCalib() {
     vpDisplay::flush(img_);
 
     if (!pause_at_each_frame) {
-        vpImagePoint ip;
-        vpDisplay::displayRectangle(img_, 0, 0, img_.getWidth(), 15, vpColor::black, true);
-        vpDisplay::displayCharString(img_, 10, 10, "Click on the window to select the current image", vpColor::red);
-        vpDisplay::flush(img_);
-        if (pause_image_) {
-            pause_image_ = false;
-        } else {
-            return;
+        try {
+            vpImagePoint ip;
+            vpDisplay::displayRectangle(img_, 0, 0, img_.getWidth(), 15, vpColor::black, true);
+            vpDisplay::displayCharString(img_, 10, 10, "Click on the window to select the current image", vpColor::red);
+            vpDisplay::flush(img_);
+            if (pause_image_) {
+                pause_image_ = false;
+            } else {
+                return;
+            }
+        } catch (...) {
+            ROS_ERROR("Could not handle pause at each image key point slection");
         }
     }
 
@@ -204,17 +208,31 @@ void CamCalibration::processCamCalib() {
 
             vpDisplay::displayCross(img_, d.getCog(), 10, vpColor::red);
             vpDisplay::flush(img_);
-        } catch (vpTrackingException e) {
-            ROS_ERROR("Failed to init point");
+
+        } catch (...) {
+            ROS_ERROR(" FAILED TO SELECT KEYPOINTS ,  SELECT KEY POINTS CAREFULLY");
+            QMessageBox Msgbox;
+            Msgbox.setText("SEVERE ERROR!!!,FAILED TO SELECT KEYPOINTS, SELECT KEY POINTS CAREFULLY \n");
+            Msgbox.exec();
+            return;
         }
     }
-
     vpHomogeneousMatrix cMo;
-    pose.computePose(vpPose::LAGRANGE, cMo);
-    pose.computePose(vpPose::VIRTUAL_VS, cMo);
-    vpHomogeneousMatrix cMoTmp = cMo;
 
+    try {
+        pose.computePose(vpPose::LAGRANGE, cMo);
+        pose.computePose(vpPose::VIRTUAL_VS, cMo);
+    } catch (...) {
+        ROS_ERROR("POSE COMPUTATION WITH LAGRANCE FAILED, SELECT KEYPOINTS MORE CAREFULLY !!!");
+        QMessageBox Msgbox;
+        Msgbox.setText("SEVERE ERROR!!! ,LAGRANGE DIVIDED BY ZERO,  SELECT KEY POINTS CAREFULLY \n");
+        Msgbox.exec();
+        return;
+    }
+
+    vpHomogeneousMatrix cMoTmp = cMo;
     vpCameraParameters camTmp = cam_param_;
+
     // compute local calibration to match the calibration grid with the image
     try {
         calib.computeCalibration(vpCalibration::CALIB_VIRTUAL_VS, cMoTmp, camTmp, false);
@@ -317,6 +335,12 @@ void CamCalibration::processCamCalib() {
         }
     } catch (...) {
         ROS_ERROR("calibration failed.");
+        QMessageBox Msgbox;
+        Msgbox.setText(
+            "SEVERE ERROR!!! ,CALIBRATION FAILED, MAKE SURE THE CALIBRATION BOARD IS CLEARLY VISIBLE IN CAMERA AND ALL "
+            "KEYPOINTS ARE SELECTED IN AN ORDER\n");
+        Msgbox.exec();
+        return;
     }
 }
 
