@@ -47,6 +47,7 @@ src/main.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${roscpp_LIBRARIES} Qt5::Widgets)
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
+
 #############
 ## Install ##
 #############
@@ -57,3 +58,13 @@ install(
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+#includes
+install(DIRECTORY 
+  include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  PATTERN ".svn" EXCLUDE
+  PATTERN ".git" EXCLUDE
+)
+#Install Directory
+install(DIRECTORY cfg DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

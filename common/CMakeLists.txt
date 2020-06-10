@@ -44,24 +44,17 @@ add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 #############
 ## Install ##
 #############
-
-install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h"
-   PATTERN ".svn" EXCLUDE
-)
-
-## Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES
-#   # myfile1
-#   # myfile2
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
 install(
   TARGETS
     ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+#includes
+install(DIRECTORY 
+  include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  PATTERN ".svn" EXCLUDE
+  PATTERN ".git" EXCLUDE
 )
