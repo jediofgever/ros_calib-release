@@ -29,6 +29,8 @@ catkin_package(
   sensor_msgs
   moveit_core
   moveit_ros_planning_interface
+  visp_hand2eye_calibration
+  visp_bridge
 )
 
 include_directories( SYSTEM include ${THIS_PACKAGE_INCLUDE_DIRS})
