@@ -186,7 +186,7 @@ void HandEyeNode::arrangeInitialPositionAtTopofMarker() {
                                                                listener_ptr_);
 
     } else {
-        robot_contoller_ptr_->moveEndEffectortoGoalinJointSpace(initial_pose, move_group_ptr_);
+        robot_contoller_ptr_->moveJointstoTargetPositions({0, 0, 0, 0, 0, 0}, move_group_ptr_);
     }
 }
 
@@ -242,7 +242,7 @@ int main(int argc, char** argv) {
     int executed_poses_counter = 0;
 
     // ENTER the looping, make sure our god, our dear ROS is ok and all poses are not executed
-    while (ros::ok() && (executed_poses_counter < num_random_pose_variants * 10)) {
+    while (ros::ok() && (executed_poses_counter < num_random_pose_variants * 4)) {
         // if pose is reachable execute it, else raise the error and go to next pose;
         bool is_generated_pose_planable = pose_generator_ptr_->executePose(executed_poses_counter);
         if (is_generated_pose_planable) {
