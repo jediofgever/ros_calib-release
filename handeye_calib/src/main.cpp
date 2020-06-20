@@ -38,6 +38,8 @@ class HandEyeNode {
 
     bool executed_poses_counter;
 
+    bool is_eye_in_hand;
+
    public:
     HandEyeNode(ros::NodeHandle* nh);
     ~HandEyeNode();
@@ -100,6 +102,7 @@ HandEyeNode::HandEyeNode(ros::NodeHandle* nh) {
     transfrom_marker_to_camera_sub =
         nh_->subscribe("/aruco_tracker/transform", 1, &HandEyeNode::marker2CamTransCallback, this);
     marker_pose_in_camera_link_sub = nh_->subscribe("/aruco_tracker/pose", 1, &HandEyeNode::markerPoseCallback, this);
+    ros::param::get("eye_in_hand", is_eye_in_hand);
 }
 
 HandEyeNode::~HandEyeNode() {}
@@ -175,10 +178,16 @@ void HandEyeNode::arrangeInitialPositionAtTopofMarker() {
     marker_in_tool.position.x = latest_marker_pose_in_camera_link.pose.position.z;
     marker_in_tool.position.y = latest_marker_pose_in_camera_link.pose.position.y;
     marker_in_tool.position.z = latest_marker_pose_in_camera_link.pose.position.x;
-    distance_to_travel_in_tool.position.x = marker_in_tool.position.x;
-    distance_to_travel_in_tool.position.y = marker_in_tool.position.y;
-    distance_to_travel_in_tool.position.z = marker_in_tool.position.z - kDistanceinZ;
-    robot_contoller_ptr_->moveEndEffectortoGoalinToolSpace(distance_to_travel_in_tool, move_group_ptr_, listener_ptr_);
+    if (is_eye_in_hand) {
+        distance_to_travel_in_tool.position.x = marker_in_tool.position.x;
+        distance_to_travel_in_tool.position.y = marker_in_tool.position.y;
+        distance_to_travel_in_tool.position.z = marker_in_tool.position.z - kDistanceinZ;
+        robot_contoller_ptr_->moveEndEffectortoGoalinToolSpace(distance_to_travel_in_tool, move_group_ptr_,
+                                                               listener_ptr_);
+
+    } else {
+        robot_contoller_ptr_->moveEndEffectortoGoalinJointSpace(initial_pose, move_group_ptr_);
+    }
 }
 
 /**
