@@ -24,8 +24,8 @@ class RobotPoseGenerator {
     std::vector<geometry_msgs::Pose> random_generated_poses_vector;
 
     // Max AND MIN translation in CM, through X AND Y axes
-    int kLOWERTHRESHOLDCM = 10;
-    int kUPPERTHRESHOLDCM = 20;
+    int kLOWERTHRESHOLDCM = 3;
+    int kUPPERTHRESHOLDCM = 6;
 
     enum Signed_Axes_Enum { X_PLUS = 0, X_MINUS = 1, Y_PLUS = 2, Y_MINUS = 3 };
     enum Quadrant_Enum { ONE = 0, TWO = 1, THREE = 2, FOUR = 3 };
@@ -35,6 +35,7 @@ class RobotPoseGenerator {
 
     geometry_msgs::PoseArray random_generated_poses_array;
     visualization_msgs::MarkerArray random_generated_pose_index_array;
+    double spehere_radius;
 
    public:
     /**

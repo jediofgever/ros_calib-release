@@ -4,6 +4,7 @@ tracking_base_frame: "camera_link"
 tracking_marker_frame:  "camera_marker"
 calibration_path: "handeye_calibration_result.yaml"
 eye_in_hand: true
-num_random_pose_variants: 4
+num_random_pose_variants: 2
 # TOTAL NUMBER OF POSES WILL BE num_random_pose_variants * 10
 real_robot_initial_pose:  [0.590, 0.000, 0.550, 3.14, 0.00, 0.00]
+kDistanceinZ: 0.4

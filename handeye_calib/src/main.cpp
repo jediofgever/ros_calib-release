@@ -168,7 +168,8 @@ void HandEyeNode::arrangeInitialPositionAtTopofMarker() {
     }
     ROS_INFO("aruco marker pose is up  approaching it..... \n");
 
-    double kDistanceinZ = 0.4;
+    double kDistanceinZ;
+    ros::param::get("kDistanceinZ", kDistanceinZ);
     // move robot on top of marker
     geometry_msgs::Pose marker_in_tool, distance_to_travel_in_tool;
     marker_in_tool.position.x = latest_marker_pose_in_camera_link.pose.position.z;

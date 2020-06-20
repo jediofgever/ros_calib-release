@@ -200,24 +200,22 @@ void RobotPoseGenerator::translateAndRotateThroughSingleAxe(double rand_translat
     switch (signed_axe) {
         case Signed_Axes_Enum::X_PLUS:
             temp_random_pose.position.x += rand_translation;
-            temp_recorrected_orientation_rpy[1] += (1.57 - rotation_recorrection);
-            temp_random_pose.position.z -= 0.05;
+            temp_recorrected_orientation_rpy[1] += 2 * (1.57 - rotation_recorrection);
             break;
 
         case Signed_Axes_Enum::X_MINUS:
             temp_random_pose.position.x -= rand_translation;
-            temp_recorrected_orientation_rpy[1] -= (1.57 - rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] -= 2 * (1.57 - rotation_recorrection);
             break;
 
         case Signed_Axes_Enum::Y_PLUS:
             temp_random_pose.position.y += rand_translation;
-            temp_recorrected_orientation_rpy[0] -= (1.57 - rotation_recorrection);
+            temp_recorrected_orientation_rpy[0] -= 2 * (1.57 - rotation_recorrection);
             break;
 
         case Signed_Axes_Enum::Y_MINUS:
             temp_random_pose.position.y -= rand_translation;
-            temp_recorrected_orientation_rpy[0] += (1.57 - rotation_recorrection);
-            temp_random_pose.position.z -= 0.05;
+            temp_recorrected_orientation_rpy[0] += 2 * (1.57 - rotation_recorrection);
             break;
     }
     // finally store the calculated postion and orientation into  random_generated_poses_vector
@@ -272,34 +270,33 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
     switch (quadrant) {
         case Quadrant_Enum::ONE:
             temp_random_pose.position.x += rand_translation;
-            temp_recorrected_orientation_rpy[1] += (1.57 - rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] += 2 * (1.57 - rotation_recorrection);
             temp_random_pose.position.y += rand_translation;
-            temp_recorrected_orientation_rpy[0] -= (1.57 - rotation_recorrection);
-            temp_random_pose.position.z -= 0.05;
+            temp_recorrected_orientation_rpy[0] -= 2 * (1.57 - rotation_recorrection);
+
             break;
 
         case Quadrant_Enum::TWO:
             temp_random_pose.position.x -= rand_translation;
-            temp_recorrected_orientation_rpy[1] -= (1.57 - rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] -= 2 * (1.57 - rotation_recorrection);
             temp_random_pose.position.y += rand_translation;
-            temp_recorrected_orientation_rpy[0] -= (1.57 - rotation_recorrection);
-            temp_random_pose.position.z -= 0.05;
+            temp_recorrected_orientation_rpy[0] -= 2 * (1.57 - rotation_recorrection);
+
             break;
 
         case Quadrant_Enum::THREE:
             temp_random_pose.position.x -= rand_translation;
-            temp_recorrected_orientation_rpy[1] -= (1.57 - rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] -= 2 * (1.57 - rotation_recorrection);
             temp_random_pose.position.y -= rand_translation;
-            temp_recorrected_orientation_rpy[0] += (1.57 - rotation_recorrection);
-            temp_random_pose.position.z -= 0.05;
+            temp_recorrected_orientation_rpy[0] += 2 * (1.57 - rotation_recorrection);
+
             break;
 
         case Quadrant_Enum::FOUR:
             temp_random_pose.position.x += rand_translation;
-            temp_recorrected_orientation_rpy[1] += (1.57 - rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] += 2 * (1.57 - rotation_recorrection);
             temp_random_pose.position.y -= rand_translation;
-            temp_recorrected_orientation_rpy[0] += (1.57 - rotation_recorrection);
-            temp_random_pose.position.z -= 0.05;
+            temp_recorrected_orientation_rpy[0] += 2 * (1.57 - rotation_recorrection);
             break;
     }
 
