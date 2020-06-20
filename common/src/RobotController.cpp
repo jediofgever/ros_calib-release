@@ -54,7 +54,7 @@ bool RobotController::moveEndEffectortoGoalinJointSpace(
     std::vector<double> min_joint_positions = {100.0, 100.0, 100.0, 100.0, 100.0, 100.0};
     std::vector<double> max_joint_positions = {-100.0, -100.0, -100.0, -100.0, -100.0, -100.0};
 
-    std::vector<double> joint_roation_limits = {M_PI, 3 * M_PI_4, 3 * M_PI_4, M_PI, M_PI, 2 * M_PI};
+    std::vector<double> joint_roation_limits = {M_PI, 3 * M_PI_4, 3 * M_PI_4, M_PI, 2 * M_PI, 4 * M_PI};
 
     for (size_t i = 0; i < my_plan.trajectory_.joint_trajectory.points.size(); i++) {
         trajectory_msgs::JointTrajectoryPoint this_point = my_plan.trajectory_.joint_trajectory.points[i];

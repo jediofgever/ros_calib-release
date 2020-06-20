@@ -26,8 +26,8 @@ class RobotPoseGenerator {
     std::vector<geometry_msgs::PoseStamped> random_generated_poses_vector;
 
     // Max AND MIN translation in CM, through X AND Y axes
-    int kLOWERTHRESHOLDCM = 10;
-    int kUPPERTHRESHOLDCM = 15;
+    int kLOWERTHRESHOLDCM = 5;
+    int kUPPERTHRESHOLDCM = 8;
 
     enum Signed_Axes_Enum { X_PLUS = 0, X_MINUS = 1, Y_PLUS = 2, Y_MINUS = 3 };
     enum Quadrant_Enum { ONE = 0, TWO = 1, THREE = 2, FOUR = 3 };
@@ -37,7 +37,6 @@ class RobotPoseGenerator {
 
     geometry_msgs::PoseArray random_generated_poses_array;
     visualization_msgs::MarkerArray random_generated_pose_index_array;
-    double spehere_radius;
 
     tf::TransformListener *listener_;
 
@@ -94,22 +93,9 @@ class RobotPoseGenerator {
      * @param rand_translation
      * @param start_pose
      * @param start_RPY
-     * @param signed_axe
-     */
-    void translateAndRotateThroughSingleAxe(double rand_translation, geometry_msgs::Pose start_pose,
-                                            std::vector<double> start_RPY, int signed_axe);
-
-    /**
-     * @brief   function to calculate the pose for robot TCP , considers the translation, calculates the
-     * recorrected angles in order for robot TCP to constantly look at the Marker
-     *
-     * @param rand_translation
-     * @param start_pose
-     * @param start_RPY
      * @param quadrant
      */
-    void translateAndRotateThroughDoubleAxes(double rand_translation, geometry_msgs::Pose start_pose,
-                                             std::vector<double> start_RPY, int quadrant);
+    void translateAndRotateThroughDoubleAxes(double rand_translation, int quadrant);
 
     /**
      * @brief RETRUN A RANDOM INTEGER BETWEEN GIVEN BOUNDRIES
