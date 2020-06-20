@@ -1,6 +1,8 @@
 #include <XmlRpcException.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/convert.h>
+
+#include <tf/transform_listener.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <functional>
@@ -21,11 +23,11 @@ class RobotPoseGenerator {
     // to plan , execute  given poses
     moveit::planning_interface::MoveGroupInterface *move_group_ptr_;
     // random generated poses vector
-    std::vector<geometry_msgs::Pose> random_generated_poses_vector;
+    std::vector<geometry_msgs::PoseStamped> random_generated_poses_vector;
 
     // Max AND MIN translation in CM, through X AND Y axes
-    int kLOWERTHRESHOLDCM = 3;
-    int kUPPERTHRESHOLDCM = 6;
+    int kLOWERTHRESHOLDCM = 10;
+    int kUPPERTHRESHOLDCM = 15;
 
     enum Signed_Axes_Enum { X_PLUS = 0, X_MINUS = 1, Y_PLUS = 2, Y_MINUS = 3 };
     enum Quadrant_Enum { ONE = 0, TWO = 1, THREE = 2, FOUR = 3 };
@@ -36,6 +38,8 @@ class RobotPoseGenerator {
     geometry_msgs::PoseArray random_generated_poses_array;
     visualization_msgs::MarkerArray random_generated_pose_index_array;
     double spehere_radius;
+
+    tf::TransformListener *listener_;
 
    public:
     /**
