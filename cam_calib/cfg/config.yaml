@@ -17,3 +17,4 @@ selected_points_y: [0.03, 0.12, 0.12, 0.03]
 selected_points_z: [0.00, 0.00, 0.00, 0.00]
 # TOTAL NUMBER OF RANDOM POSES WILL BE num_random_pose_variants * 10
 num_random_pose_variants: 4
+kDistanceinZ: 0.5

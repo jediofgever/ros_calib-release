@@ -17,8 +17,8 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "calibrator_node");
     QApplication app(argc, argv);
 
-    ros::NodeHandle nh;
-
+    // ros node handler to for pubs and subs
+    ros::NodeHandle node_handle;
     // define a loop rate
     int node_loop_rate = 30;
     ros::Rate loop_rate(node_loop_rate);
@@ -28,9 +28,10 @@ int main(int argc, char** argv) {
     spinner.start();
 
     // for generating random poses and executing them
-    RobotPoseGenerator pose_generator;
+    RobotPoseGenerator* pose_generator_ptr_;
+    pose_generator_ptr_ = new RobotPoseGenerator();
 
-    CamCalibration cam_calib(&nh);
+    CamCalibration cam_calib(&node_handle);
     ROS_INFO("Camera Calibration Has been Initilizaed..");
 
     QMessageBox Msgbox;
@@ -46,15 +47,15 @@ int main(int argc, char** argv) {
 
     // Each Pose variants will contin 10 poses , so the total generated poses will be num_pose_variants * 10
     int num_random_pose_variants;
-    nh.getParam("num_random_pose_variants", num_random_pose_variants);
-    pose_generator.generatePoses(num_random_pose_variants);
+    node_handle.getParam("num_random_pose_variants", num_random_pose_variants);
+    pose_generator_ptr_->generatePoses(num_random_pose_variants);
     // start from 0 and increment until all generated poses are visited
     int executed_poses_counter = 0;
 
     // ENTER the looping, make sure our god, our dear ROS is ok and all poses are not executed
     while (ros::ok() && (executed_poses_counter < num_random_pose_variants * 4)) {
         // if pose is reachable execute it, else raise the error and go to next pose;
-        bool is_generated_pose_planable = pose_generator.executePose(executed_poses_counter);
+        bool is_generated_pose_planable = pose_generator_ptr_->executePose(executed_poses_counter);
         if (is_generated_pose_planable) {
             // Okay this pose is reachable and we have moved the robot to these pose
             ROS_INFO("ROBOT RECAHED TO THE GENERATED POSE,TAKING A SHOT NOW ... \n");
@@ -74,7 +75,7 @@ int main(int argc, char** argv) {
             executed_poses_counter++;
             continue;
         }
-        pose_generator.updatePoses();
+        pose_generator_ptr_->updatePoses();
 
         // spin the loop
         ros::spinOnce();
