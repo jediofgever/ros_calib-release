@@ -20,6 +20,25 @@
   * [Running the cam_calib](#running-the-cam-calib)
 - [common lib and its utilities](#common-lib-and-its-utilities)
 
+This stack involves with 3 types of calibrations that are crucial when working with a camera and robotic arm. 
+To describe this 3 types we can ask following questions;
+
+1. Given a camera and a calibration board find camera intrinsic parameters(cam_calib).
+
+2. Given a camera attached to robotc arm's end-effector, Find transform between end-effector link and camera link(haneye_calib).
+
+3. Given a camera located at a static pose WRT robot base link , Find transform between base link and camera link(handeye_calib).
+
+You will notice that in 2nd and 3rd questions they both point to  haneye_calib. haneye_calib package is capable to perform these boh types of calibration namely , the 2nd question is interpretted as (eye_in_hand) and 3rd question is interpretted as eye_in_base.
+This setting is configureable and cn be found under yaml file of haneye_calib.
+
+Calibrations can be performed in both simulation and real robots. See the gif below for illustration of handeye_calibration
+
+![.](../docs/images/handeye_1.gif)
+
+
+
+
 ## Prerequisites
 ```cpp
 
