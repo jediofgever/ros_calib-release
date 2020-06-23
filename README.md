@@ -34,7 +34,7 @@ This setting is configureable and cn be found under yaml file of haneye_calib.
 
 Calibrations can be performed in both simulation and real robots. See the gif below for illustration of handeye_calibration
 
-![.](../docs/images/handeye_1.gif)
+![.](imgs/handeye_1.gif)
 
 
 
