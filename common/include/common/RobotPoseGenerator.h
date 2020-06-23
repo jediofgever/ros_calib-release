@@ -1,3 +1,6 @@
+
+#ifndef robot_pose_generator_H
+#define robot_pose_generator_H
 #include <XmlRpcException.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/convert.h>
@@ -125,3 +128,4 @@ class RobotPoseGenerator {
      */
     static double getDistanceBetweenPose(geometry_msgs::Pose a, geometry_msgs::Pose b);
 };
+#endif
