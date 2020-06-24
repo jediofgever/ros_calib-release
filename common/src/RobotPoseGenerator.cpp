@@ -161,7 +161,7 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
     temp_random_pose.header.stamp = ros::Time::now();
 
     // get a temp copy of start rolll pitch yaw angles
-    std::vector<double> temp_recorrected_orientation_rpy = {0, 0, 0};
+    std::vector<double> temp_recorrected_orientation_rpy = {0.0, 0.0, 0.0};
 
     // get a temp copy of start pose orientation
     geometry_msgs::Quaternion temp_recorrected_orientation_quaternion;
