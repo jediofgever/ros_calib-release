@@ -194,36 +194,36 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
     switch (quadrant) {
         case Quadrant_Enum::ONE:
             temp_random_pose.pose.position.x += rand_translation;
-            temp_recorrected_orientation_rpy[1] -= 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] -= 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y += rand_translation;
-            temp_recorrected_orientation_rpy[0] -= 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[0] += 1.5 * (1.57 - rotation_recorrection);
 
             break;
 
         case Quadrant_Enum::TWO:
             temp_random_pose.pose.position.x -= rand_translation;
-            temp_recorrected_orientation_rpy[1] += 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] += 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y += rand_translation;
-            temp_recorrected_orientation_rpy[0] -= 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[0] += 1.5 * (1.57 - rotation_recorrection);
 
             break;
 
         case Quadrant_Enum::THREE:
             temp_random_pose.pose.position.x -= rand_translation;
-            temp_recorrected_orientation_rpy[1] += 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] += 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y -= rand_translation;
-            temp_recorrected_orientation_rpy[0] += 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[0] -= 1.5 * (1.57 - rotation_recorrection);
+            ;
 
             break;
 
         case Quadrant_Enum::FOUR:
             temp_random_pose.pose.position.x += rand_translation;
-            temp_recorrected_orientation_rpy[1] -= 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[1] -= 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y -= rand_translation;
-            temp_recorrected_orientation_rpy[0] += 2 * (rotation_recorrection);
+            temp_recorrected_orientation_rpy[0] -= 1.5 * (1.57 - rotation_recorrection);
             break;
     }
-    temp_recorrected_orientation_rpy[2] += 3.14;
     temp_recorrected_orientation_quaternion = eulertoQuaternion(
         temp_recorrected_orientation_rpy[0], temp_recorrected_orientation_rpy[1], temp_recorrected_orientation_rpy[2]);
     temp_random_pose.pose.orientation = temp_recorrected_orientation_quaternion;
