@@ -51,6 +51,10 @@ void RobotPoseGenerator::generatePoses(int number_of_variants) {
     std::vector<double> start_RPY = move_group_ptr_->getCurrentRPY();
     for (size_t i = 0; i < number_of_variants; i++) {
         double rand_translation = randint(kLOWERTHRESHOLDCM, kUPPERTHRESHOLDCM) / 100.0;
+        translateAndRotateThroughSingleAxe(rand_translation, RobotPoseGenerator::Signed_Axes_Enum::X_PLUS);
+        translateAndRotateThroughSingleAxe(rand_translation, RobotPoseGenerator::Signed_Axes_Enum::X_MINUS);
+        translateAndRotateThroughSingleAxe(rand_translation, RobotPoseGenerator::Signed_Axes_Enum::Y_PLUS);
+        translateAndRotateThroughSingleAxe(rand_translation, RobotPoseGenerator::Signed_Axes_Enum::Y_MINUS);
         translateAndRotateThroughDoubleAxes(rand_translation, RobotPoseGenerator::Quadrant_Enum::ONE);
         translateAndRotateThroughDoubleAxes(rand_translation, RobotPoseGenerator::Quadrant_Enum::TWO);
         translateAndRotateThroughDoubleAxes(rand_translation, RobotPoseGenerator::Quadrant_Enum::THREE);
@@ -143,6 +147,81 @@ bool RobotPoseGenerator::executePose(int pose_index) {
         ROS_ERROR("bad random pose not going to execute ... ");
         return false;
     }
+}
+
+/**
+ * @brief   function to calculate the pose for robot TCP , considers the translation, calculates the
+ * recorrected angles in order for robot TCP to constantly look at the Marker
+ *
+ * @param rand_translation
+
+ * @param quadrant
+ */
+void RobotPoseGenerator::translateAndRotateThroughSingleAxe(double rand_translation, int quadrant) {
+    // translate through given axis but also reccorect the angle so that robot TCP keeps looking at Marker
+    // get a temp copy of start pose
+    geometry_msgs::PoseStamped temp_random_pose;
+    temp_random_pose.header.frame_id = "tool0";
+    temp_random_pose.header.stamp = ros::Time::now();
+
+    // get a temp copy of start rolll pitch yaw angles
+    std::vector<double> temp_recorrected_orientation_rpy = {0.0, 0.0, 0.0};
+
+    // get a temp copy of start pose orientation
+    geometry_msgs::Quaternion temp_recorrected_orientation_quaternion;
+    // this is the angle that needs to be added or substracted to roll, pitch or yaw depending the translation through
+    // which axe
+    //
+    double kDistanceinZ;
+    ros::param::get("kDistanceinZ", kDistanceinZ);
+    double rotation_recorrection = std::atan2(kDistanceinZ, rand_translation);
+    /*
+    This function translate and rotates the robot TCP through two axes at one time, each of this four quadrants is an
+    combination of 2 axes at the same time.
+    For example, in Quadrant ONE , robot translates though X+ and Y+ with amount of rand_translation, also the angles
+    gets recorrected same amount
+
+                    ^ +X
+    Quadrant ONE    |     Quadrant FOUR
+                    |
+                    |
+                    |
+    +Y <--------------------------> -Y
+                    |
+                    |
+    Quadrant TWO    |     Quadrant THREE
+                    |
+                    |
+                      -X
+    */
+
+    switch (quadrant) {
+        case Signed_Axes_Enum::X_PLUS:
+            temp_random_pose.pose.position.x += rand_translation;
+            temp_recorrected_orientation_rpy[1] -= 1.5 * (1.57 - rotation_recorrection);
+
+            break;
+
+        case Signed_Axes_Enum::X_MINUS:
+            temp_random_pose.pose.position.x -= rand_translation;
+            temp_recorrected_orientation_rpy[1] += 1.5 * (1.57 - rotation_recorrection);
+
+            break;
+
+        case Signed_Axes_Enum::Y_PLUS:
+            temp_random_pose.pose.position.y += rand_translation;
+            temp_recorrected_orientation_rpy[0] += 1.5 * (1.57 - rotation_recorrection);
+            break;
+
+        case Signed_Axes_Enum::Y_MINUS:
+            temp_random_pose.pose.position.y -= rand_translation;
+            temp_recorrected_orientation_rpy[0] -= 1.5 * (1.57 - rotation_recorrection);
+            break;
+    }
+    temp_recorrected_orientation_quaternion = eulertoQuaternion(
+        temp_recorrected_orientation_rpy[0], temp_recorrected_orientation_rpy[1], temp_recorrected_orientation_rpy[2]);
+    temp_random_pose.pose.orientation = temp_recorrected_orientation_quaternion;
+    random_generated_poses_vector.push_back(temp_random_pose);
 }
 
 /**

@@ -7,4 +7,4 @@ eye_in_hand: true
 num_random_pose_variants: 4
 # TOTAL NUMBER OF POSES WILL BE num_random_pose_variants * 4
 real_robot_initial_pose:  [0.590, 0.000, 0.550, 3.14, 0.00, 0.00]
-kDistanceinZ: 0.4
+kDistanceinZ: 0.5

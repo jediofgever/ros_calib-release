@@ -101,6 +101,17 @@ class RobotPoseGenerator {
     void translateAndRotateThroughDoubleAxes(double rand_translation, int quadrant);
 
     /**
+     * @brief   function to calculate the pose for robot TCP , considers the translation, calculates the
+     * recorrected angles in order for robot TCP to constantly look at the Marker
+     *
+     * @param rand_translation
+     * @param start_pose
+     * @param start_RPY
+     * @param quadrant
+     */
+    void translateAndRotateThroughSingleAxe(double rand_translation, int quadrant);
+
+    /**
      * @brief RETRUN A RANDOM INTEGER BETWEEN GIVEN BOUNDRIES
      *
      * @param Min
