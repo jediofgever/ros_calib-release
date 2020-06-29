@@ -198,23 +198,26 @@ void RobotPoseGenerator::translateAndRotateThroughSingleAxe(double rand_translat
     switch (quadrant) {
         case Signed_Axes_Enum::X_PLUS:
             temp_random_pose.pose.position.x += rand_translation;
+            temp_random_pose.pose.position.z += 0.05;
             temp_recorrected_orientation_rpy[1] -= 1.5 * (1.57 - rotation_recorrection);
-
             break;
 
         case Signed_Axes_Enum::X_MINUS:
             temp_random_pose.pose.position.x -= rand_translation;
+            temp_random_pose.pose.position.z += 0.05;
             temp_recorrected_orientation_rpy[1] += 1.5 * (1.57 - rotation_recorrection);
 
             break;
 
         case Signed_Axes_Enum::Y_PLUS:
             temp_random_pose.pose.position.y += rand_translation;
+            temp_random_pose.pose.position.z += 0.05;
             temp_recorrected_orientation_rpy[0] += 1.5 * (1.57 - rotation_recorrection);
             break;
 
         case Signed_Axes_Enum::Y_MINUS:
             temp_random_pose.pose.position.y -= rand_translation;
+            temp_random_pose.pose.position.z += 0.05;
             temp_recorrected_orientation_rpy[0] -= 1.5 * (1.57 - rotation_recorrection);
             break;
     }
@@ -276,6 +279,7 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
             temp_recorrected_orientation_rpy[1] -= 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y += rand_translation;
             temp_recorrected_orientation_rpy[0] += 1.5 * (1.57 - rotation_recorrection);
+            temp_random_pose.pose.position.z -= 0.05;
 
             break;
 
@@ -284,6 +288,7 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
             temp_recorrected_orientation_rpy[1] += 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y += rand_translation;
             temp_recorrected_orientation_rpy[0] += 1.5 * (1.57 - rotation_recorrection);
+            temp_random_pose.pose.position.z -= 0.05;
 
             break;
 
@@ -292,7 +297,7 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
             temp_recorrected_orientation_rpy[1] += 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y -= rand_translation;
             temp_recorrected_orientation_rpy[0] -= 1.5 * (1.57 - rotation_recorrection);
-            ;
+            temp_random_pose.pose.position.z -= 0.05;
 
             break;
 
@@ -301,6 +306,8 @@ void RobotPoseGenerator::translateAndRotateThroughDoubleAxes(double rand_transla
             temp_recorrected_orientation_rpy[1] -= 1.5 * (1.57 - rotation_recorrection);
             temp_random_pose.pose.position.y -= rand_translation;
             temp_recorrected_orientation_rpy[0] -= 1.5 * (1.57 - rotation_recorrection);
+            temp_random_pose.pose.position.z -= 0.05;
+
             break;
     }
     temp_recorrected_orientation_quaternion = eulertoQuaternion(
