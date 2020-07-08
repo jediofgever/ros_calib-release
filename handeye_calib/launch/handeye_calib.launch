@@ -7,7 +7,7 @@
     <node type="rviz" name="rviz" pkg="rviz"  args="-d $(find handeye_calib)/cfg/calibration.rviz"/>
 
     <!-- START REALSENSE CAMERA, REPLACE THIS WITH YOUR OWN CAMERA DRIVER-->
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch" >
+    <include file="$(find fanuc_arm_perception_utilities)/launch/robot_camera.launch" >
     </include>
 
     <!-- START ARUCO TRACKER -->
@@ -16,7 +16,7 @@
     <!-- <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />-->
 
 
-    <arg name="marker_size" value="0.10" doc="Size of the ArUco marker used, in meters" />
+    <arg name="marker_size" value="0.20" doc="Size of the ArUco marker used, in meters" />
     <arg name="marker_id"  value="202" doc="The ID of the ArUco marker used" />
     <node name="aruco_tracker" pkg="aruco_ros" type="single">
         <remap from="/camera_info" to="/camera/color/camera_info" />
