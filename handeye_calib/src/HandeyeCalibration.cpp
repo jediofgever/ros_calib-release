@@ -140,12 +140,13 @@ void HandeyeCalibration::computeCalibration() {
     try {
         vpHandEyeCalibration::calibrate(cMo_vec, wMe_vec, eMc);
         vpPoseVector pose_vec(eMc);
+        double kDistanceColor2Depth = 0.015;
 
         geometry_msgs::Transform trans = visp_bridge::toGeometryMsgsTransform(eMc);
         vpArray2D<double> trans_as_1D_array;
         trans_as_1D_array.resize(1, 7);
         trans_as_1D_array[0][0] = trans.translation.x;
-        trans_as_1D_array[0][1] = trans.translation.y;
+        trans_as_1D_array[0][1] = trans.translation.y + kDistanceColor2Depth;
         trans_as_1D_array[0][2] = trans.translation.z;
         trans_as_1D_array[0][3] = trans.rotation.x;
         trans_as_1D_array[0][4] = trans.rotation.y;
