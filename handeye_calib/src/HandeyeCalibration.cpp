@@ -82,8 +82,7 @@ void HandeyeCalibration::takeSample() {
  *
  * @return std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray>
  */
-std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray>
-HandeyeCalibration::samples2Visp() {
+std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray> HandeyeCalibration::samples2Visp() {
     // we need to convert std::vector<std::pair<geometry_msgs::TransformStamped, geometry_msgs::TransformStamped>> TO
     // std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray>
     visp_hand2eye_calibration::TransformArray hand_world_samples;
@@ -96,8 +95,7 @@ HandeyeCalibration::samples2Visp() {
         hand_world_samples.transforms.push_back(transform_pair_samples_vector[i].first.transform);
         camera_marker_samples.transforms.push_back(transform_pair_samples_vector[i].second.transform);
     }
-    std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray> visp_samples(
-        hand_world_samples, camera_marker_samples);
+    std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray> visp_samples(hand_world_samples, camera_marker_samples);
 
     // return the pair of TransformArray
     return visp_samples;
@@ -114,8 +112,7 @@ void HandeyeCalibration::computeCalibration() {
     }
 
     // convert collected samples transfrom pairs to visp using utility function  samples2Visp()
-    std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray> visp_samples =
-        samples2Visp();
+    std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray> visp_samples = samples2Visp();
 
     // hand_world camera_marker transfroms samples should be equal
     if (visp_samples.first.transforms.size() != visp_samples.second.transforms.size()) {
@@ -146,7 +143,7 @@ void HandeyeCalibration::computeCalibration() {
         vpArray2D<double> trans_as_1D_array;
         trans_as_1D_array.resize(1, 7);
         trans_as_1D_array[0][0] = trans.translation.x;
-        trans_as_1D_array[0][1] = trans.translation.y + kDistanceColor2Depth;
+        trans_as_1D_array[0][1] = trans.translation.y;
         trans_as_1D_array[0][2] = trans.translation.z;
         trans_as_1D_array[0][3] = trans.rotation.x;
         trans_as_1D_array[0][4] = trans.rotation.y;
