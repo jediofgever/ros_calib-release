@@ -1,9 +1,7 @@
 <launch>
 
-  <include file="$(find fanuc_lrmate200id7l_moveit_config)/launch/demo_handeye_calib_gazebo.launch">
-  </include> 
+  <include file="$(find fanuc_lrmate200id7l_moveit_config)/launch/demo_handeye_calib_gazebo.launch"></include>
 
-  <include file="$(find handeye_calib)/launch/handeye_calib.launch">
-  </include> 
-   
+  <include file="$(find handeye_calib)/launch/handeye_calib.launch"></include>
+
 </launch>

@@ -1,14 +1,14 @@
 <launch>
 
-   <!-- LOAD CONFIG.YAML FILE TO ROSPARAM SERVER-->
-    <rosparam file="$(find handeye_calib)/cfg/config.yaml" />   
+    <!-- LOAD CONFIG.YAML FILE TO ROSPARAM SERVER-->
+    <rosparam file="$(find handeye_calib)/cfg/config.yaml" />
 
-    <!-- START RVIZ WITH A DEFAULT VIEW-->>
-    <node type="rviz" name="rviz" pkg="rviz"  args="-d $(find handeye_calib)/cfg/calibration.rviz"/>
+    <!-- START RVIZ WITH A DEFAULT VIEW-->
+    >
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find handeye_calib)/cfg/calibration.rviz" />
 
     <!-- START REALSENSE CAMERA, REPLACE THIS WITH YOUR OWN CAMERA DRIVER-->
-    <include file="$(find staubli_arm_perception_utilities)/launch/robot_camera.launch" >
-    </include>
+    <include file="$(find   fanuc_arm_perception_utilities)/launch/robot_camera.launch"></include>
 
     <!-- START ARUCO TRACKER -->
     <!-- IN REAL MARKER ISZE 10 cm , in simulation it is 25 cm-->
@@ -17,20 +17,19 @@
 
 
     <arg name="marker_size" value="0.10" doc="Size of the ArUco marker used, in meters" />
-    <arg name="marker_id"  value="202" doc="The ID of the ArUco marker used" />
+    <arg name="marker_id" value="202" doc="The ID of the ArUco marker used" />
     <node name="aruco_tracker" pkg="aruco_ros" type="single">
         <remap from="/camera_info" to="/camera/color/camera_info" />
         <remap from="/image" to="/camera/color/image_raw" />
-        <param name="image_is_rectified" value="false"/>
-        <param name="marker_size"        value="$(arg marker_size)"/>
-        <param name="marker_id"          value="$(arg marker_id)"/>
-        <param name="reference_frame"    value="camera_link"/>
-        <param name="camera_frame"       value="camera_color_optical_frame"/>
-        <param name="marker_frame"       value="camera_marker" />
+        <param name="image_is_rectified" value="false" />
+        <param name="marker_size" value="$(arg marker_size)" />
+        <param name="marker_id" value="$(arg marker_id)" />
+        <param name="reference_frame" value="camera_link" />
+        <param name="camera_frame" value="camera_color_optical_frame" />
+        <param name="marker_frame" value="camera_marker" />
     </node>
 
     <!-- START handeye_calib NODE-->
-    <node name="handeye_calib" pkg="handeye_calib" type="handeye_calib" launch-prefix="gdb -ex run --args" output="screen">
-    </node>
+    <node name="handeye_calib" pkg="handeye_calib" type="handeye_calib" launch-prefix="gdb -ex run --args" output="screen"></node>
 
 </launch>
