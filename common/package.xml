@@ -26,8 +26,7 @@
   <run_depend>roscpp</run_depend>
   <run_depend>moveit_core</run_depend>
   <run_depend>moveit_ros_planning_interface</run_depend>
-  
-  <export>
-  </export>
-  
+
+  <export></export>
+
 </package>
