@@ -108,9 +108,11 @@ int main(int argc, char** argv)
   loop_rate.sleep();
 }
 
-QMessageBox::information(0, "Calibration Finished", "Calibration Done !!!");
-
 // at this point node is dead
+
+QMessageBox finish_msg;
+finish_msg.setText("CALIBRATION DONE , LOOK FOR THE FILE UNDER YOUR HOME DIR");
+finish_msg.exec();
 ros::waitForShutdown();
 ros::shutdown();
 ROS_WARN("calibrator node SHUT DOWN BYE.");
