@@ -100,21 +100,13 @@ int main(int argc, char** argv)
     // sleep to match with loop rate
     loop_rate.sleep();
   }
-  pose_generator_ptr_->updatePoses();
 
-  // spin the loop
-  ros::spinOnce();
-  // sleep to match with loop rate
-  loop_rate.sleep();
-}
-
-// at this point node is dead
-
-QMessageBox finish_msg;
-finish_msg.setText("CALIBRATION DONE , LOOK FOR THE FILE UNDER YOUR HOME DIR");
-finish_msg.exec();
-ros::waitForShutdown();
-ros::shutdown();
-ROS_WARN("calibrator node SHUT DOWN BYE.");
-return 0;
+  QMessageBox finish_msg;
+  finish_msg.setText("CALIBRATION DONE , LOOK FOR THE FILE UNDER YOUR HOME DIR");
+  finish_msg.exec();
+  // at this point node is dead
+  ros::waitForShutdown();
+  ros::shutdown();
+  ROS_WARN("calibrator node SHUT DOWN BYE.");
+  return 0;
 }
