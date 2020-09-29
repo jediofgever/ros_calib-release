@@ -117,7 +117,7 @@ We use [MoveIt](https://moveit.ros.org/) configured 6DOF robotic arm, other para
 
 ## configuration parameters
 
-```
+```yaml
 #self explanary parameters
 robot_base_frame: "base_link"
 robot_effector_frame: "link_6"
@@ -142,7 +142,7 @@ Obviously we need a marker that we can detect its 6DOF pose and track it in came
 Refer to Installation section for installing Aruco as a ROS package.
 
 ### configure aruco parameters in handeye_calib.launch
-```
+```xml
         <!-- IN REAL MARKER ISZE 10 cm , in simulation it is 25 cm-->
         <!-- <arg name="marker_size" value="0.10" doc="Size of the ArUco marker used, in meters" />-->
         <!-- <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />-->
@@ -165,7 +165,7 @@ but any RGB camera that can be run with ROS should be usable. Though the topic n
 Replace the Realsense part in handeye_calib.launch, if you are using another camera 
 
 ## configuration parameters
-```
+```yaml
 # camera image topic name , RGB image
 camera_image_topic_name: "/camera/color/image_raw"
 # ros service topic name to set camera info,
