@@ -2,9 +2,13 @@ robot_base_frame: "base_link"
 robot_effector_frame: "link_6"
 tracking_base_frame: "camera_link"
 tracking_marker_frame:  "camera_marker"
+#handeye_calib package will save results into this file under your home dir
 calibration_path: "handeye_calibration_result.yaml"
+#is camera mounted on hand or base
 eye_in_hand: true
-num_random_pose_variants: 4
-# TOTAL NUMBER OF POSES WILL BE num_random_pose_variants * 4
+# TOTAL NUMBER OF POSES WILL BE num_random_pose_variants * 8
+num_random_pose_variants: 8
+#robot will go into this pose when you start calibration , change this pose to your needs
 real_robot_initial_pose:  [0.590, 0.000, 0.550, 3.14, 0.00, 0.00]
+#distance in z axis that robot will keep above the aruco marker
 kDistanceinZ: 0.5
