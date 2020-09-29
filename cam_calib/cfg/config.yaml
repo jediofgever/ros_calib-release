@@ -18,3 +18,4 @@ selected_points_z: [0.00, 0.00, 0.00, 0.00]
 # TOTAL NUMBER OF RANDOM POSES WILL BE num_random_pose_variants * 10
 num_random_pose_variants: 4
 kDistanceinZ: 0.5
+real_robot_initial_pose:  [0.300, -0.040, 0.670, 3.14, 0.00, 0.00]

@@ -1,6 +1,10 @@
 #include <cam_calib/CamCalibration.h>
 #include <common/RobotPoseGenerator.h>
 #include <QApplication>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QWaitCondition>
+
 #include <QPixmap>
 #include <QtWidgets/QMessageBox>
 #include <mutex>
@@ -38,15 +42,15 @@ int main(int argc, char** argv)
 
   CamCalibration cam_calib(&node_handle);
   ROS_INFO("Camera Calibration Has been Initilizaed..");
+  ROS_INFO("Waiting robot states to be available..");
+  sleep(5.0);
   // move robot to a place where we clearly see marker
   geometry_msgs::Pose initial_pose;
   RobotPoseGenerator::loadPosemsgsFromYAML(&node_handle, "real_robot_initial_pose", initial_pose);
   double current_distance_to_initial_pose =
       RobotPoseGenerator::getDistanceBetweenPose(initial_pose, move_group_ptr_->getCurrentPose().pose);
-  if (current_distance_to_initial_pose > 0.02)
-  {
-    robot_contoller_ptr_->moveEndEffectortoGoalinJointSpace(initial_pose, move_group_ptr_);
-  }
+
+  robot_contoller_ptr_->moveEndEffectortoGoalinJointSpace(initial_pose, move_group_ptr_);
 
   QMessageBox Msgbox;
   Msgbox.setText("YOU HAVE STARTED CAMERA INSTRISC CALIBRATION NODE \n \n"
