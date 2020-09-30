@@ -145,15 +145,19 @@ Refer to Installation section for installing Aruco as a ROS package.
   <!-- <arg name="marker_size" value="0.10" doc="Size of the ArUco marker used, in meters" />-->
   <!-- <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />-->
 
+  <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />
+  <arg name="marker_id" value="202" doc="The ID of the ArUco marker used" />
+  <node name="aruco_tracker" pkg="aruco_ros" type="single">
+      <remap from="/camera_info" to="/camera/color/camera_info" />
+      <remap from="/image" to="/camera/color/image_raw" />
+      <param name="image_is_rectified" value="false" />
+      <param name="marker_size" value="$(arg marker_size)" />
+      <param name="marker_id" value="$(arg marker_id)" />
+      <param name="reference_frame" value="camera_link" />
+      <param name="camera_frame" value="camera_color_optical_frame" />
+      <param name="marker_frame" value="camera_marker" />
+  </node>
 
-  <remap from="/camera_info" to="/camera/color/camera_info" />
-  <remap from="/image" to="/camera/color/image_raw" />
-  <param name="image_is_rectified" value="false" />
-  <param name="marker_size" value="$(arg marker_size)" />
-  <param name="marker_id" value="$(arg marker_id)" />
-  <param name="reference_frame" value="camera_link" />
-  <param name="camera_frame" value="camera_color_optical_frame" />
-  <param name="marker_frame" value="camera_marker" />
 ```
 
 ### Type of Camera that You use for handeye_calib
