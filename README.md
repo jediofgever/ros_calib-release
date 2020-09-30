@@ -115,7 +115,7 @@ This package can be configured to find both cases mentioned above. Under the han
 
 We use [MoveIt](https://moveit.ros.org/) configured 6DOF robotic arm, other parameters under the handeye_calib/cfg/config.yaml should be adjusted to your robot's MoveIt configuration, but these parameters are mostly the same for moveit configured robots. The parameters names are descriptive enough to adress their values. In the defualt setup they are as; 
 
-## configuration parameters
+## handeye_calib configuration parameters
 
 ```yaml
 #self explanary parameters
@@ -135,27 +135,25 @@ real_robot_initial_pose:  [0.590, 0.000, 0.550, 3.14, 0.00, 0.00]
 kDistanceinZ: 0.5
 ```
 
-
-
 ### Aruco Tracker for handeye_calib
 Obviously we need a marker that we can detect its 6DOF pose and track it in camera frame. handeye_calib uses Aruco tracker for this purpose. In the launch file of handeye_calib you will find parameters configured for Aruco tracker and its ROS node call. Generate a aruco marker here; https://chev.me/arucogen/ , (care about its size in meters) after you print it to a A4. You will need to enter the aruco marker ID and its size to correct places handeye_calib.launch
 Refer to Installation section for installing Aruco as a ROS package.
 
-### configure aruco parameters in handeye_calib.launch
+### configure aruco parameters in handeye_calib.launch (handeye_calib)
 ```xml
-        <!-- IN REAL MARKER ISZE 10 cm , in simulation it is 25 cm-->
-        <!-- <arg name="marker_size" value="0.10" doc="Size of the ArUco marker used, in meters" />-->
-        <!-- <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />-->
+  <!-- IN REAL MARKER ISZE 10 cm , in simulation it is 25 cm-->
+  <!-- <arg name="marker_size" value="0.10" doc="Size of the ArUco marker used, in meters" />-->
+  <!-- <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />-->
 
 
-        <remap from="/camera_info" to="/camera/color/camera_info" />
-        <remap from="/image" to="/camera/color/image_raw" />
-        <param name="image_is_rectified" value="false" />
-        <param name="marker_size" value="$(arg marker_size)" />
-        <param name="marker_id" value="$(arg marker_id)" />
-        <param name="reference_frame" value="camera_link" />
-        <param name="camera_frame" value="camera_color_optical_frame" />
-        <param name="marker_frame" value="camera_marker" />
+  <remap from="/camera_info" to="/camera/color/camera_info" />
+  <remap from="/image" to="/camera/color/image_raw" />
+  <param name="image_is_rectified" value="false" />
+  <param name="marker_size" value="$(arg marker_size)" />
+  <param name="marker_id" value="$(arg marker_id)" />
+  <param name="reference_frame" value="camera_link" />
+  <param name="camera_frame" value="camera_color_optical_frame" />
+  <param name="marker_frame" value="camera_marker" />
 ```
 
 ### Type of Camera that You use for handeye_calib
@@ -163,32 +161,6 @@ We have used realsense d435 camera and in the launch file you will see that in t
 but any RGB camera that can be run with ROS should be usable. Though the topic names and coordinate frames should be double checked when setting the parameters. in handeye_calib config.yaml and handeye_calib.launch files. 
 
 Replace the Realsense part in handeye_calib.launch, if you are using another camera 
-
-## configuration parameters
-```yaml
-# camera image topic name , RGB image
-camera_image_topic_name: "/camera/color/image_raw"
-# ros service topic name to set camera info,
-set_camera_info_service_topic_name: "/camera/color/set_camera_info"
-# calibration file name under your /home/user_name/calibration_path
-calibration_path: "cam_calibration_result.ini"
-#DO NOT CHANGE THE VALUES,
-gray_level_precision: 0.7
-size_precision: 0.5
-pause_at_each_frame: True
-# BE SURE THAT PRINTED MARKER CIRCLES HAVE 30MM linear distance between each other
-model_points_x: [0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15]
-model_points_y: [0.0, 0.00, 0.00, 0.00, 0.00, 0.00, .03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09, 0.12,0.12, 0.12, 0.12, 0.12, 0.12, 0.15,0.15, 0.15, 0.15, 0.15, 0.15]
-model_points_z: [0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00,0.00]
-selected_points_x: [0.03, 0.03, 0.09, 0.12]
-selected_points_y: [0.03, 0.12, 0.12, 0.03]
-selected_points_z: [0.00, 0.00, 0.00, 0.00]
-# TOTAL NUMBER OF RANDOM POSES WILL BE num_random_pose_variants * 10
-num_random_pose_variants: 4
-kDistanceinZ: 0.5
-real_robot_initial_pose:  [0.300, -0.040, 0.670, 3.14, 0.00, 0.00]
-```
-
 
 ### Running the handeye_calib
 For handeye_calib to run , you will need to make sure you have bringed up the robot, and a TF stream is available for the TF listener, This typically is achieved by initilizing the Moveit generated launch files for your robot , e.g move_group launch file. 
@@ -229,9 +201,31 @@ Again we tested cam_calib with realsense d435 camera but it is no big deal to us
 
 for example in realsense following topics are used;
 
-* camera_image_topic_name: "/camera/color/image_raw"
-* set_camera_info_service_topic_name: "/camera/color/set_camera_info"
-* calibration_path: "/home/atas/calibration.ini"
+## configuration parameters for cam_calib
+```yaml
+# camera image topic name , RGB image
+camera_image_topic_name: "/camera/color/image_raw"
+# ros service topic name to set camera info,
+set_camera_info_service_topic_name: "/camera/color/set_camera_info"
+# calibration file name under your /home/user_name/calibration_path
+calibration_path: "cam_calibration_result.ini"
+#DO NOT CHANGE THE VALUES,
+gray_level_precision: 0.7
+size_precision: 0.5
+pause_at_each_frame: True
+# BE SURE THAT PRINTED MARKER CIRCLES HAVE 30MM linear distance between each other
+# refer to https://github.com/lagadic/vision_visp/tree/master/visp_camera_calibration/launch for details
+model_points_x: [0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.0, 0.03, 0.06, 0.09, 0.12, 0.15]
+model_points_y: [0.0, 0.00, 0.00, 0.00, 0.00, 0.00, .03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09, 0.12,0.12, 0.12, 0.12, 0.12, 0.12, 0.15,0.15, 0.15, 0.15, 0.15, 0.15]
+model_points_z: [0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.0, 0.00, 0.00, 0.00, 0.00,0.00]
+selected_points_x: [0.03, 0.03, 0.09, 0.12]
+selected_points_y: [0.03, 0.12, 0.12, 0.03]
+selected_points_z: [0.00, 0.00, 0.00, 0.00]
+# TOTAL NUMBER OF RANDOM POSES WILL BE num_random_pose_variants * 10
+num_random_pose_variants: 4
+kDistanceinZ: 0.5
+real_robot_initial_pose:  [0.300, -0.040, 0.670, 3.14, 0.00, 0.00]
+```
 
 ### Running the cam_calib
 Just like handeye_calib , once we run this package a set of randomly generated poses be queued, after arriving at each pose the user will be asked to select the keypoints 1-2-3-4 on the image. After selected all keypoints the algorithm should be able to find the rest of other circles, the user should click mouse-left and the robot will be moved to next pose, this process will take place until all generated poses are visited, finally a .ini file will dumped to calibraion_path that you set in cfg/config.yaml file. 
