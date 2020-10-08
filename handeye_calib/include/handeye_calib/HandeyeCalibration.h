@@ -90,5 +90,5 @@ class HandeyeCalibration {
      * @brief given a pair of visp_hand2eye_calibration::TransformArray computes calibration
      *
      */
-    void computeCalibration();
+    void computeCalibration(int curr_sample, int total_sample);
 };

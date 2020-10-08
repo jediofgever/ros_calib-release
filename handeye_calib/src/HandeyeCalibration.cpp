@@ -104,7 +104,7 @@ std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::
  * @brief given a pair of visp_hand2eye_calibration::TransformArray computes calibration
  *
  */
-void HandeyeCalibration::computeCalibration() {
+void HandeyeCalibration::computeCalibration(int curr_sample, int total_sample) {
     // Less than MIN_SAMPLES we do not process computation
     if (transform_pair_samples_vector.size() < MIN_SAMPLES) {
         ROS_ERROR("LESS THAN MIN_SAMPLES, SAMPLES NOT ENOUGH YET NOT GONNA COMPUTE A");
@@ -157,7 +157,7 @@ void HandeyeCalibration::computeCalibration() {
         nh_->getParam("calibration_path", calibration_path);
         trans_as_1D_array.saveYAML(home_dir_str + "/" + calibration_path, trans_as_1D_array);
         ROS_INFO_STREAM("RESULTING EXTRINSIC CALIB RESULT IS: " << std::endl << trans);
-
+        ROS_WARN("EXECUTED POSES: %d / %d",curr_sample, total_sample);
     } catch (const std::exception &e) {
         // catch the error
         std::cerr << e.what() << '\n';
