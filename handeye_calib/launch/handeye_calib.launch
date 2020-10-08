@@ -16,7 +16,7 @@
     <!-- <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />-->
 
 
-    <arg name="marker_size" value="0.25" doc="Size of the ArUco marker used, in meters" />
+    <arg name="marker_size" value="0.1" doc="Size of the ArUco marker used, in meters" />
     <arg name="marker_id" value="202" doc="The ID of the ArUco marker used" />
     <node name="aruco_tracker" pkg="aruco_ros" type="single">
         <remap from="/camera_info" to="/camera/color/camera_info" />
