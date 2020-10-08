@@ -141,7 +141,7 @@ bool CamCalibration::setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Reques
     return true;
 }
 
-void CamCalibration::processCamCalib() {
+void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
     ros::Rate loop_rate(200);
     double gray_level_precision;
     double size_precision;
@@ -191,6 +191,8 @@ void CamCalibration::processCamCalib() {
             vpDisplay::displayRectangle(img_, 0, 0, img_.getWidth(), 15, vpColor::black, true);
             vpDisplay::displayCharString(
                 img_, 10, 10, boost::str(boost::format("click on point %1%") % (i + 1)).c_str(), vpColor::red);
+            vpDisplay::displayCharString(
+                img_, img_.getHeight()-10,10, boost::str(boost::format("executed poses; %1%/%2%") % curr_sample % total_sample).c_str() , vpColor::red);
             vpDisplay::flush(img_);
             while (ros::ok() && !vpDisplay::getClick(img_, ip, false))
                 ;
@@ -315,7 +317,7 @@ void CamCalibration::processCamCalib() {
             point_correspondence_publisher_.publish(calib_all_points);
             ROS_INFO_STREAM("PUBLISHING CORRESPONDE POINTS");
         } else {
-            processCamCalib();
+            processCamCalib(curr_sample, total_sample);
             return;
         }
 

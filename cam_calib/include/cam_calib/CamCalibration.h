@@ -100,5 +100,5 @@ class CamCalibration {
      * @brief does actual collection of keypoints selected by user, publishes corresponding point for calibrator
      *        calibrate service is called through this function
      */
-    void processCamCalib();
+    void processCamCalib(int curr_sample, int total_sample);
 };
