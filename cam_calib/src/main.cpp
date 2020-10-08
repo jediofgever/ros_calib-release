@@ -81,7 +81,7 @@ int main(int argc, char** argv)
       ROS_INFO("ROBOT RECAHED TO THE GENERATED POSE,TAKING A SHOT NOW ... \n");
       // here everything is fine, so take that goddamn sample , let the user select the keypoints and compute
       // calibration
-      cam_calib.processCamCalib(executed_poses_counter , num_random_pose_variants * 8);
+      cam_calib.processCamCalib(executed_poses_counter+1 , num_random_pose_variants * 8);
       // increment the counter of executed poses
       executed_poses_counter++;
     }

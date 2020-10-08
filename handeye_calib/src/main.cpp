@@ -254,7 +254,7 @@ int main(int argc, char** argv) {
             //  check if marker is visiable and detected, (look at the definition of isTransformValid)
             if (handeye_node.isTransformValid()) {
                 handeye_node_ptr_->takeSample();
-                handeye_node_ptr_->computeCalibration(executed_poses_counter,num_random_pose_variants * 8);
+                handeye_node_ptr_->computeCalibration(executed_poses_counter+1,num_random_pose_variants * 8);
                 executed_poses_counter++;
 
             } else {
