@@ -25,8 +25,9 @@
  * https://github.com/lagadic/vision_visp
  *
  */
-class HandeyeCalibration {
-   private:
+class HandeyeCalibration
+{
+  private:
     // base link of the robot, in ros this will translate to "base_link"
     std::string robot_base_frame;
     // end_effector frame of robot  uusally "tool0" or "link_6" for 6DOF robots
@@ -51,7 +52,7 @@ class HandeyeCalibration {
 
     bool eye_in_hand;
 
-   public:
+  public:
     /**
      * @brief Construct a new Handeye Calibration object
      *
@@ -74,17 +75,21 @@ class HandeyeCalibration {
     std::pair<geometry_msgs::TransformStamped, geometry_msgs::TransformStamped> getTransfromPair();
 
     /**
-     * @brief take a sample pair of geometry_msgs::TransformStamped and store it in transform_pair_samples_vector
+     * @brief take a sample pair of geometry_msgs::TransformStamped and store it in
+     * transform_pair_samples_vector
      *
      */
     void takeSample();
 
     /**
-     * @brief converts transform_pair_samples_vector to a pair of visp_hand2eye_calibration::TransformArray type
+     * @brief converts transform_pair_samples_vector to a pair of
+     * visp_hand2eye_calibration::TransformArray type
      *
-     * @return std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray>
+     * @return std::pair<visp_hand2eye_calibration::TransformArray,
+     * visp_hand2eye_calibration::TransformArray>
      */
-    std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray> samples2Visp();
+    std::pair<visp_hand2eye_calibration::TransformArray, visp_hand2eye_calibration::TransformArray>
+    samples2Visp();
 
     /**
      * @brief given a pair of visp_hand2eye_calibration::TransformArray computes calibration

@@ -25,8 +25,9 @@
  * https://github.com/lagadic/vision_visp
  *
  */
-class CamCalibration {
-   private:
+class CamCalibration
+{
+  private:
     // ROS types
     ros::NodeHandle *nh_;
     ros::Subscriber camera_raw_subscriber_;
@@ -52,9 +53,10 @@ class CamCalibration {
     // mutex for camera image
     std::mutex image_mutex;
 
-   public:
+  public:
     //! service type declaration for calibrate service
-    typedef boost::function<bool(sensor_msgs::SetCameraInfo::Request &, sensor_msgs::SetCameraInfo::Response &res)>
+    typedef boost::function<bool(sensor_msgs::SetCameraInfo::Request &,
+                                 sensor_msgs::SetCameraInfo::Response &res)>
         set_camera_info_bis_service_callback_t;
 
     /**
@@ -80,7 +82,8 @@ class CamCalibration {
     void init();
 
     /**
-     * @brief  camera Image callback, stroes the latest recieved image in visp type global variable "img_"
+     * @brief  camera Image callback, stroes the latest recieved image in visp type global variable
+     * "img_"
      *
      * @param image
      */
@@ -94,11 +97,12 @@ class CamCalibration {
      * @return true
      * @return false
      */
-    bool setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request &req, sensor_msgs::SetCameraInfo::Response &res);
+    bool setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request &req,
+                                  sensor_msgs::SetCameraInfo::Response &res);
 
     /**
-     * @brief does actual collection of keypoints selected by user, publishes corresponding point for calibrator
-     *        calibrate service is called through this function
+     * @brief does actual collection of keypoints selected by user, publishes corresponding point
+     * for calibrator calibrate service is called through this function
      */
     void processCamCalib(int curr_sample, int total_sample);
 };

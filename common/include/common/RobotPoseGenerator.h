@@ -17,8 +17,9 @@
  *        executes(moves) robot TCP to generated poses with its method  executePose()
  *
  */
-class RobotPoseGenerator {
-   private:
+class RobotPoseGenerator
+{
+  private:
     // node handler of ros might needed
     ros::NodeHandle *nh_;
     // drives robot TCP to desired pose
@@ -32,8 +33,20 @@ class RobotPoseGenerator {
     int kLOWERTHRESHOLDCM = 4;
     int kUPPERTHRESHOLDCM = 8;
 
-    enum Signed_Axes_Enum { X_PLUS = 0, X_MINUS = 1, Y_PLUS = 2, Y_MINUS = 3 };
-    enum Quadrant_Enum { ONE = 0, TWO = 1, THREE = 2, FOUR = 3 };
+    enum Signed_Axes_Enum
+    {
+        X_PLUS  = 0,
+        X_MINUS = 1,
+        Y_PLUS  = 2,
+        Y_MINUS = 3
+    };
+    enum Quadrant_Enum
+    {
+        ONE   = 0,
+        TWO   = 1,
+        THREE = 2,
+        FOUR  = 3
+    };
 
     ros::Publisher random_generated_pose_publisher;
     ros::Publisher random_generated_pose_index_publiher;
@@ -43,7 +56,7 @@ class RobotPoseGenerator {
 
     tf::TransformListener *listener_;
 
-   public:
+  public:
     /**
      * @brief Construct a new Robot Pose Generator object
      *
@@ -70,11 +83,13 @@ class RobotPoseGenerator {
      * @param robot_rz_radian
      * @return geometry_msgs::Quaternion
      */
-    static geometry_msgs::Quaternion eulertoQuaternion(double robot_rx_radian, double robot_ry_radian,
+    static geometry_msgs::Quaternion eulertoQuaternion(double robot_rx_radian,
+                                                       double robot_ry_radian,
                                                        double robot_rz_radian);
 
     /**
-     * @brief executes the randomly generated pose in random_generated_poses_vector with index of pose_index
+     * @brief executes the randomly generated pose in random_generated_poses_vector with index of
+     * pose_index
      *
      * @param pose_index
      * @return true if pose at pose_index was reachable
@@ -90,8 +105,8 @@ class RobotPoseGenerator {
     void updatePoses();
 
     /**
-     * @brief   function to calculate the pose for robot TCP , considers the translation, calculates the
-     * recorrected angles in order for robot TCP to constantly look at the Marker
+     * @brief   function to calculate the pose for robot TCP , considers the translation, calculates
+     * the recorrected angles in order for robot TCP to constantly look at the Marker
      *
      * @param rand_translation
      * @param start_pose
@@ -101,8 +116,8 @@ class RobotPoseGenerator {
     void translateAndRotateThroughDoubleAxes(double rand_translation, int quadrant);
 
     /**
-     * @brief   function to calculate the pose for robot TCP , considers the translation, calculates the
-     * recorrected angles in order for robot TCP to constantly look at the Marker
+     * @brief   function to calculate the pose for robot TCP , considers the translation, calculates
+     * the recorrected angles in order for robot TCP to constantly look at the Marker
      *
      * @param rand_translation
      * @param start_pose
@@ -127,7 +142,8 @@ class RobotPoseGenerator {
      * @param param_name
      * @param pose
      */
-    static geometry_msgs::Pose loadPosemsgsFromYAML(ros::NodeHandle *nh_, std::string param_name,
+    static geometry_msgs::Pose loadPosemsgsFromYAML(ros::NodeHandle *nh_,
+                                                    std::string param_name,
                                                     geometry_msgs::Pose &pose);
 
     /**
