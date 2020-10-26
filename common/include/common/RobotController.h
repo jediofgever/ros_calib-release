@@ -23,10 +23,12 @@
 
 /**
  * @brief
- * Robot Controller class, moves Robot TCP and Joints into desired values with preffered spaces(joint/cartesian,tool)
+ * Robot Controller class, moves Robot TCP and Joints into desired values with preffered
+ * spaces(joint/cartesian,tool)
  */
-class RobotController {
-   private:
+class RobotController
+{
+  private:
     // ros node handle pointer
     ros::NodeHandle *node_handle_ptr_;
 
@@ -36,7 +38,7 @@ class RobotController {
     // Joint Model Groups needed by visual_tools_
     const robot_model::JointModelGroup *joint_model_group_ptr_;
 
-   public:
+  public:
     /**
      * @brief Construct a new Robot Controller object
      *
@@ -56,8 +58,9 @@ class RobotController {
      * @param move_group_ptr_
      * @return when it finishs the task
      */
-    bool moveEndEffectortoGoalinJointSpace(geometry_msgs::Pose robot_tcp_goal_in_joint_space,
-                                           moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
+    bool moveEndEffectortoGoalinJointSpace(
+        geometry_msgs::Pose robot_tcp_goal_in_joint_space,
+        moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
 
     /**
      * @brief moves robot tcp in joint space, a straight line following is  guarenteed
@@ -66,8 +69,9 @@ class RobotController {
      * @param move_group_ptr_
      * @return when it finishs the task
      */
-    bool moveEndEffectortoGoalinCartesianSpace(geometry_msgs::Pose robot_tcp_goal_in_cartesian_space,
-                                               moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
+    bool moveEndEffectortoGoalinCartesianSpace(
+        geometry_msgs::Pose robot_tcp_goal_in_cartesian_space,
+        moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
 
     /**
      * @brief moves each individual joint to given target position
@@ -76,8 +80,9 @@ class RobotController {
      * @param move_group_ptr_
      * @return when it finishs the task
      */
-    bool moveJointstoTargetPositions(std::vector<double> robot_joint_states,
-                                     moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
+    bool moveJointstoTargetPositions(
+        std::vector<double> robot_joint_states,
+        moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
 
     /**
      * @brief moves robot along End-effector(TOOL) link frames
@@ -87,9 +92,10 @@ class RobotController {
      * @param listener_
      * @return when it finishs the task
      */
-    bool moveEndEffectortoGoalinToolSpace(geometry_msgs::Pose robot_tcp_goal_in_tool_space,
-                                          moveit::planning_interface::MoveGroupInterface *move_group_ptr_,
-                                          tf::TransformListener *listener_);
+    bool moveEndEffectortoGoalinToolSpace(
+        geometry_msgs::Pose robot_tcp_goal_in_tool_space,
+        moveit::planning_interface::MoveGroupInterface *move_group_ptr_,
+        tf::TransformListener *listener_);
 
     /**
      * @brief not implemented yet, but will open the robot gripper
@@ -111,7 +117,8 @@ class RobotController {
     void stopRobotTrajectrory(moveit::planning_interface::MoveGroupInterface *move_group_ptr_);
 
     /**
-     * @brief stops current execution of any trajectory but keeps memory of goal, so the execution can be continued
+     * @brief stops current execution of any trajectory but keeps memory of goal, so the execution
+     * can be continued
      *
      * @param move_group_ptr_
      */

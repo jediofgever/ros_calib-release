@@ -23,13 +23,14 @@
 
 #include <ros/service_traits.h>
 
-CamCalibration::CamCalibration(ros::NodeHandle* nh)
+CamCalibration::CamCalibration(ros::NodeHandle *nh)
     : queue_size_(10),
       pause_image_(false),
       img_(960, 540, 128),
       cam_param_(600, 600, 0, 0),
       is_initialized_(false),
-      nh_(nh) {
+      nh_(nh)
+{
     // Get parameters from config.yaml file
     std::string model_points_x_param("model_points_x");
     std::string model_points_y_param("model_points_y");
@@ -41,18 +42,19 @@ CamCalibration::CamCalibration(ros::NodeHandle* nh)
     ros::param::get("set_camera_info_service_topic_name", set_camera_info_service_topic_name_);
 
     // subscribe to raw image
-    camera_raw_subscriber_ =
-        nh_->subscribe(camera_image_topic_name_, queue_size_, &CamCalibration::rawImageCallback, this);
+    camera_raw_subscriber_ = nh_->subscribe(camera_image_topic_name_, queue_size_,
+                                            &CamCalibration::rawImageCallback, this);
     // connect to calibrate service
     calibrate_service_ = nh_->serviceClient<visp_camera_calibration::calibrate>("/calibrate");
     // point correspondence publisher for camera calibrator
-    point_correspondence_publisher_ =
-        nh_->advertise<visp_camera_calibration::CalibPointArray>("point_correspondence", queue_size_);
+    point_correspondence_publisher_ = nh_->advertise<visp_camera_calibration::CalibPointArray>(
+        "point_correspondence", queue_size_);
     // Parse the paraneters read from yaml file, append them to lists
 
     set_camera_info_bis_service_callback_t set_camera_info_bis_callback =
         boost::bind(&CamCalibration::setCameraInfoBisCallback, this, _1, _2);
-    set_camera_info_bis_service_ = nh_->advertiseService("set_camera_info_bis", set_camera_info_bis_callback);
+    set_camera_info_bis_service_ =
+        nh_->advertiseService("set_camera_info_bis", set_camera_info_bis_callback);
 
     XmlRpc::XmlRpcValue model_points_x_list;
     XmlRpc::XmlRpcValue model_points_y_list;
@@ -64,7 +66,8 @@ CamCalibration::CamCalibration(ros::NodeHandle* nh)
     ROS_ASSERT(model_points_x_list.getType() == XmlRpc::XmlRpcValue::TypeArray);
     ROS_ASSERT(model_points_x_list.size() == model_points_y_list.size() &&
                model_points_x_list.size() == model_points_z_list.size());
-    for (int i = 0; i < model_points_x_list.size(); i++) {
+    for (int i = 0; i < model_points_x_list.size(); i++)
+    {
         ROS_ASSERT(model_points_x_list[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
         ROS_ASSERT(model_points_y_list[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
         ROS_ASSERT(model_points_z_list[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
@@ -87,7 +90,8 @@ CamCalibration::CamCalibration(ros::NodeHandle* nh)
     ROS_ASSERT(selected_points_x_list.size() == selected_points_y_list.size() &&
                selected_points_x_list.size() == selected_points_z_list.size());
 
-    for (int i = 0; i < selected_points_x_list.size(); i++) {
+    for (int i = 0; i < selected_points_x_list.size(); i++)
+    {
         ROS_ASSERT(selected_points_x_list[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
         ROS_ASSERT(selected_points_y_list[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
         ROS_ASSERT(selected_points_z_list[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
@@ -101,19 +105,21 @@ CamCalibration::CamCalibration(ros::NodeHandle* nh)
     ROS_INFO("CREATED CAMCALIBRATION INSTANCE ... \n");
 }
 
-void CamCalibration::init() {
-    if (!is_initialized_) {
+void CamCalibration::init()
+{
+    if (!is_initialized_)
+    {
         // init graphical interface
-        vpDisplay* disp = new vpDisplayX();
+        vpDisplay *disp = new vpDisplayX();
         disp->init(img_);
         disp->setTitle("Image processing initialisation interface");
         vpDisplay::flush(img_);
         vpDisplay::display(img_);
         vpDisplay::displayCharString(img_, img_.getHeight() / 2 - 10, img_.getWidth() / 4,
                                      "Waiting for the camera feed.", vpColor::red);
-        vpDisplay::displayCharString(img_, img_.getHeight() / 2 + 10, img_.getWidth() / 4,
-                                     "If you are using the example camera, you should click on it's window",
-                                     vpColor::red);
+        vpDisplay::displayCharString(
+            img_, img_.getHeight() / 2 + 10, img_.getWidth() / 4,
+            "If you are using the example camera, you should click on it's window", vpColor::red);
 
         vpDisplay::flush(img_);
 
@@ -128,20 +134,22 @@ void CamCalibration::init() {
     }
 }
 
-bool CamCalibration::setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request& req,
-                                              sensor_msgs::SetCameraInfo::Response& res) {
-    struct passwd* pw = getpwuid(getuid());
-    const char* homedir = pw->pw_dir;
+bool CamCalibration::setCameraInfoBisCallback(sensor_msgs::SetCameraInfo::Request &req,
+                                              sensor_msgs::SetCameraInfo::Response &res)
+{
+    struct passwd *pw   = getpwuid(getuid());
+    const char *homedir = pw->pw_dir;
     std::string home_dir_str(homedir);
     std::string calibration_path;
     nh_->getParam("calibration_path", calibration_path);
     ROS_INFO("saving calibration file to %s", (home_dir_str + "/" + calibration_path).c_str());
-    camera_calibration_parsers::writeCalibration((home_dir_str + "/" + calibration_path), camera_image_topic_name_,
-                                                 req.camera_info);
+    camera_calibration_parsers::writeCalibration((home_dir_str + "/" + calibration_path),
+                                                 camera_image_topic_name_, req.camera_info);
     return true;
 }
 
-void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
+void CamCalibration::processCamCalib(int curr_sample, int total_sample)
+{
     ros::Rate loop_rate(200);
     double gray_level_precision;
     double size_precision;
@@ -160,18 +168,26 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
     vpDisplay::display(img_);
     vpDisplay::flush(img_);
 
-    if (!pause_at_each_frame) {
-        try {
+    if (!pause_at_each_frame)
+    {
+        try
+        {
             vpImagePoint ip;
             vpDisplay::displayRectangle(img_, 0, 0, img_.getWidth(), 15, vpColor::black, true);
-            vpDisplay::displayCharString(img_, 10, 10, "Click on the window to select the current image", vpColor::red);
+            vpDisplay::displayCharString(
+                img_, 10, 10, "Click on the window to select the current image", vpColor::red);
             vpDisplay::flush(img_);
-            if (pause_image_) {
+            if (pause_image_)
+            {
                 pause_image_ = false;
-            } else {
+            }
+            else
+            {
                 return;
             }
-        } catch (...) {
+        }
+        catch (...)
+        {
             ROS_ERROR("Could not handle pause at each image key point slection");
         }
     }
@@ -181,8 +197,10 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
     vpImagePoint ip;
 
     // lets the user select keypoints
-    for (unsigned int i = 0; i < selected_points_.size(); i++) {
-        try {
+    for (unsigned int i = 0; i < selected_points_.size(); i++)
+    {
+        try
+        {
             vpDot2 d;
             d.setGrayLevelPrecision(gray_level_precision);
             d.setSizePrecision(size_precision);
@@ -190,9 +208,13 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
             ROS_INFO("Click on point %d", i + 1);
             vpDisplay::displayRectangle(img_, 0, 0, img_.getWidth(), 15, vpColor::black, true);
             vpDisplay::displayCharString(
-                img_, 10, 10, boost::str(boost::format("click on point %1%") % (i + 1)).c_str(), vpColor::red);
+                img_, 10, 10, boost::str(boost::format("click on point %1%") % (i + 1)).c_str(),
+                vpColor::red);
             vpDisplay::displayCharString(
-                img_, img_.getHeight()-10,10, boost::str(boost::format("executed poses; %1%/%2%") % curr_sample % total_sample).c_str() , vpColor::red);
+                img_, img_.getHeight() - 10, 10,
+                boost::str(boost::format("executed poses; %1%/%2%") % curr_sample % total_sample)
+                    .c_str(),
+                vpColor::red);
             vpDisplay::flush(img_);
             while (ros::ok() && !vpDisplay::getClick(img_, ip, false))
                 ;
@@ -205,45 +227,53 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
             selected_points_[i].set_x(x);
             selected_points_[i].set_y(y);
             pose.addPoint(selected_points_[i]);
-            calib.addPoint(selected_points_[i].get_oX(), selected_points_[i].get_oY(), selected_points_[i].get_oZ(),
-                           ip);
+            calib.addPoint(selected_points_[i].get_oX(), selected_points_[i].get_oY(),
+                           selected_points_[i].get_oZ(), ip);
 
             vpDisplay::displayCross(img_, d.getCog(), 10, vpColor::red);
             vpDisplay::flush(img_);
-
-        } catch (...) {
+        }
+        catch (...)
+        {
             ROS_ERROR(" FAILED TO SELECT KEYPOINTS ,  SELECT KEY POINTS CAREFULLY");
             QMessageBox Msgbox;
-            Msgbox.setText("SEVERE ERROR!!!,FAILED TO SELECT KEYPOINTS, SELECT KEY POINTS CAREFULLY \n");
+            Msgbox.setText(
+                "SEVERE ERROR!!!,FAILED TO SELECT KEYPOINTS, SELECT KEY POINTS CAREFULLY \n");
             Msgbox.exec();
             return;
         }
     }
     vpHomogeneousMatrix cMo;
 
-    try {
+    try
+    {
         pose.computePose(vpPose::LAGRANGE, cMo);
         pose.computePose(vpPose::VIRTUAL_VS, cMo);
-    } catch (...) {
+    }
+    catch (...)
+    {
         ROS_ERROR("POSE COMPUTATION WITH LAGRANCE FAILED, SELECT KEYPOINTS MORE CAREFULLY !!!");
         QMessageBox Msgbox;
-        Msgbox.setText("SEVERE ERROR!!! ,LAGRANGE DIVIDED BY ZERO,  SELECT KEY POINTS CAREFULLY \n");
+        Msgbox.setText(
+            "SEVERE ERROR!!! ,LAGRANGE DIVIDED BY ZERO,  SELECT KEY POINTS CAREFULLY \n");
         Msgbox.exec();
         return;
     }
 
     vpHomogeneousMatrix cMoTmp = cMo;
-    vpCameraParameters camTmp = cam_param_;
+    vpCameraParameters camTmp  = cam_param_;
 
     // compute local calibration to match the calibration grid with the image
-    try {
+    try
+    {
         calib.computeCalibration(vpCalibration::CALIB_VIRTUAL_VS, cMoTmp, camTmp, false);
         ROS_DEBUG_STREAM("cMo=" << std::endl << cMoTmp << std::endl);
         ROS_DEBUG_STREAM("cam=" << std::endl << camTmp << std::endl);
 
         // project all points and track their corresponding image location
         for (std::vector<vpPoint>::iterator model_point_iter = model_points_.begin();
-             model_point_iter != model_points_.end(); model_point_iter++) {
+             model_point_iter != model_points_.end(); model_point_iter++)
+        {
             // project each model point into image according to current calibration
             vpColVector _cP, _p;
 
@@ -251,23 +281,30 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
             model_point_iter->projection(_cP, _p);
             vpMeterPixelConversion::convertPoint(camTmp, _p[0], _p[1], ip);
             if (10 < ip.get_u() && ip.get_u() < img_.getWidth() - 10 && 10 < ip.get_v() &&
-                ip.get_v() < img_.getHeight() - 10) {
-                try {
+                ip.get_v() < img_.getHeight() - 10)
+            {
+                try
+                {
                     // track the projected point, look for match
                     vpDot2 md;
                     md.setGrayLevelPrecision(gray_level_precision);
                     md.setSizePrecision(size_precision);
 
                     md.initTracking(img_, ip);
-                    if (!ros::ok()) return;
+                    if (!ros::ok())
+                        return;
 
-                    vpRect bbox = md.getBBox();
+                    vpRect bbox      = md.getBBox();
                     vpImagePoint cog = md.getCog();
-                    if (bbox.getLeft() < 5 || bbox.getRight() > (double)img_.getWidth() - 5 || bbox.getTop() < 5 ||
-                        bbox.getBottom() > (double)img_.getHeight() - 5 || vpMath::abs(ip.get_u() - cog.get_u()) > 10 ||
-                        vpMath::abs(ip.get_v() - cog.get_v()) > 10) {
+                    if (bbox.getLeft() < 5 || bbox.getRight() > (double)img_.getWidth() - 5 ||
+                        bbox.getTop() < 5 || bbox.getBottom() > (double)img_.getHeight() - 5 ||
+                        vpMath::abs(ip.get_u() - cog.get_u()) > 10 ||
+                        vpMath::abs(ip.get_v() - cog.get_v()) > 10)
+                    {
                         ROS_DEBUG("tracking failed[suspicious point location].");
-                    } else {
+                    }
+                    else
+                    {
                         // point matches
                         double x = 0, y = 0;
                         vpPixelMeterConversion::convertPoint(camTmp, cog, x, y);
@@ -288,14 +325,19 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
                         loop_rate.sleep();  // To avoid refresh problems
                         vpDisplay::flush(img_);
                     }
-                } catch (...) {
+                }
+                catch (...)
+                {
                     ROS_DEBUG("tracking failed.");
                 }
-            } else {
+            }
+            else
+            {
                 ROS_DEBUG("bad projection.");
             }
         }
-        if (calib_all_points.points.size() < 36) {
+        if (calib_all_points.points.size() < 36)
+        {
             ROS_ERROR("ALL CIRCLERS HAS NOT BEEN DETECTED !!!, THIS POSE WILL BE SKIPPED");
             QMessageBox Msgbox;
             Msgbox.setText("ALL CIRCLERS HAS NOT BEEN DETECTED !!!, THIS POSE WILL BE SKIPPED \n");
@@ -306,52 +348,64 @@ void CamCalibration::processCamCalib(int curr_sample, int total_sample) {
         ROS_INFO("Left click on the interface window to continue, right click to restart");
         vpDisplay::displayRectangle(img_, 0, 0, img_.getWidth(), 15, vpColor::black, true);
         vpDisplay::displayCharString(
-            img_, 10, 10, "Left click on the interface window to continue, right click to restart", vpColor::red);
+            img_, 10, 10, "Left click on the interface window to continue, right click to restart",
+            vpColor::red);
         vpDisplay::flush(img_);
 
         vpMouseButton::vpMouseButtonType btn;
         while (ros::ok() && !vpDisplay::getClick(img_, ip, btn, false))
             ;
 
-        if (btn == vpMouseButton::button1) {
+        if (btn == vpMouseButton::button1)
+        {
             point_correspondence_publisher_.publish(calib_all_points);
             ROS_INFO_STREAM("PUBLISHING CORRESPONDE POINTS");
-        } else {
+        }
+        else
+        {
             processCamCalib(curr_sample, total_sample);
             return;
         }
 
         visp_camera_calibration::calibrate calibrate_comm;
-        calibrate_comm.request.method = vpCalibration::CALIB_VIRTUAL_VS_DIST;
-        calibrate_comm.request.sample_width = img_.getWidth();
+        calibrate_comm.request.method        = vpCalibration::CALIB_VIRTUAL_VS_DIST;
+        calibrate_comm.request.sample_width  = img_.getWidth();
         calibrate_comm.request.sample_height = img_.getHeight();
-        if (calibrate_service_.call(calibrate_comm)) {
+        if (calibrate_service_.call(calibrate_comm))
+        {
             ROS_INFO("service called successfully");
 
             ROS_INFO("standard deviation with distorsion:");
             for (std::vector<double>::iterator i = calibrate_comm.response.stdDevErrs.begin();
                  i != calibrate_comm.response.stdDevErrs.end(); i++)
                 ROS_INFO("%f", *i);
-        } else {
+        }
+        else
+        {
             ROS_ERROR("Failed to call service");
         }
-    } catch (...) {
+    }
+    catch (...)
+    {
         ROS_ERROR("calibration failed.");
         QMessageBox Msgbox;
         Msgbox.setText(
-            "SEVERE ERROR!!! ,CALIBRATION FAILED, MAKE SURE THE CALIBRATION BOARD IS CLEARLY VISIBLE IN CAMERA AND ALL "
+            "SEVERE ERROR!!! ,CALIBRATION FAILED, MAKE SURE THE CALIBRATION BOARD IS CLEARLY "
+            "VISIBLE IN CAMERA AND ALL "
             "KEYPOINTS ARE SELECTED IN AN ORDER\n");
         Msgbox.exec();
         return;
     }
 }
 
-void CamCalibration::rawImageCallback(const sensor_msgs::Image::ConstPtr& image) {
+void CamCalibration::rawImageCallback(const sensor_msgs::Image::ConstPtr &image)
+{
     const std::lock_guard<std::mutex> lock(image_mutex);
     img_ = visp_bridge::toVispImage(*image);
     // the lock will be released after outta scope
 }
 
-CamCalibration::~CamCalibration() {
+CamCalibration::~CamCalibration()
+{
     // TODO Auto-generated destructor stub
 }
