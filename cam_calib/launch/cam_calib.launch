@@ -7,7 +7,8 @@
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find cam_calib)/cfg/calibration.rviz"/>
 
     <!-- START REALSENSE CAMERA, REPLACE THIS WITH YOUR OWN CAMERA DRIVER-->
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch" >
+    <include file="$(find staubli_arm_perception_utilities)/launch/robot_camera.launch" >
+
     </include>
     <!-- START visp_camera_calibration_calibrator WE NEED THIS FRO CALIBRATION SERVICE-->
     <node pkg="visp_camera_calibration" name="visp_camera_calibration_calibrator" type="visp_camera_calibration_calibrator"  output="screen"/>
